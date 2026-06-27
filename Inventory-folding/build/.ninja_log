@@ -1,0 +1,25 @@
+# ninja log v7
+12	938	8042828550800340	CMakeFiles/example.dir/view/MainMenu.cpp.obj	a7ecc5fa37445f0f
+16	905	8042828550830379	CMakeFiles/example.dir/view/GameGUI.cpp.obj	6eb47e0af718f6f1
+19	918	8042828550880427	CMakeFiles/example.dir/view/GameResults.cpp.obj	cc91dfb77965d627
+18	943	8042832716914363	build.ninja	41106b87b694bf87
+18	943	8042832716914363	C:/Users/Yatofon/Desktop/Practice/Inventory-folding/build/cmake_install.cmake	41106b87b694bf87
+13	1312	8042835074501736	CMakeFiles/example.dir/view/GameGUI.cpp.obj	6eb47e0af718f6f1
+17	1314	8042835074541767	CMakeFiles/example.dir/view/GameResults.cpp.obj	cc91dfb77965d627
+7	990	8042837957073969	CMakeFiles/example.dir/main.cpp.obj	c50dbf1e9c2e9790
+17	1121	8042837957201556	CMakeFiles/example.dir/view/GameResults.cpp.obj	cc91dfb77965d627
+10	1228	8042837957114004	CMakeFiles/example.dir/view/MainMenu.cpp.obj	a7ecc5fa37445f0f
+14	1248	8042837957150401	CMakeFiles/example.dir/view/GameGUI.cpp.obj	6eb47e0af718f6f1
+1248	2084	8042837969493031	example.exe	d11ac9067393e15d
+13	1005	8042840652986252	CMakeFiles/example.dir/view/GameResults.cpp.obj	cc91dfb77965d627
+10	1022	8042840652956209	CMakeFiles/example.dir/view/GameGUI.cpp.obj	6eb47e0af718f6f1
+6	1033	8042840652916179	CMakeFiles/example.dir/view/MainMenu.cpp.obj	a7ecc5fa37445f0f
+1033	1201	8042840663187904	example.exe	d11ac9067393e15d
+19	1064	8042843524464625	CMakeFiles/example.dir/view/MainMenu.cpp.obj	a7ecc5fa37445f0f
+26	1070	8042843524534693	CMakeFiles/example.dir/view/GameResults.cpp.obj	cc91dfb77965d627
+23	1072	8042843524504654	CMakeFiles/example.dir/view/GameGUI.cpp.obj	6eb47e0af718f6f1
+1074	1644	8042843535025075	example.exe	d11ac9067393e15d
+26	2041	8042844275402499	CMakeFiles/example.dir/view/GameResults.cpp.obj	cc91dfb77965d627
+19	2052	8042844275312406	CMakeFiles/example.dir/view/MainMenu.cpp.obj	a7ecc5fa37445f0f
+23	2054	8042844275352445	CMakeFiles/example.dir/view/GameGUI.cpp.obj	6eb47e0af718f6f1
+2054	2195	8042844295669247	example.exe	d11ac9067393e15d

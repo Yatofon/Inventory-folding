@@ -1,8 +1,0 @@
-[
-{
-  "directory": "C:/Users/User/Desktop/Inventory-folding/build",
-  "command": "C:\\mingw64\\bin\\c++.exe -IC:/Users/User/Desktop/Inventory-folding/include -g -std=c++17 -o CMakeFiles\\example.dir\\main.cpp.obj -c C:\\Users\\User\\Desktop\\Inventory-folding\\main.cpp",
-  "file": "C:\\Users\\User\\Desktop\\Inventory-folding\\main.cpp",
-  "output": "CMakeFiles\\example.dir\\main.cpp.obj"
-}
-]
