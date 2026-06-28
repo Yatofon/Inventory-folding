@@ -1,0 +1,26 @@
+[
+{
+  "directory": "C:/Users/Public/Inventory-folding-master/Inventory-folding/build",
+  "command": "C:\\mingw64\\bin\\g++.exe  @CMakeFiles/example.dir/includes_CXX.rsp -g -std=c++17 -o CMakeFiles\\example.dir\\main.cpp.obj -c C:\\Users\\Public\\Inventory-folding-master\\Inventory-folding\\main.cpp",
+  "file": "C:/Users/Public/Inventory-folding-master/Inventory-folding/main.cpp",
+  "output": "CMakeFiles/example.dir/main.cpp.obj"
+},
+{
+  "directory": "C:/Users/Public/Inventory-folding-master/Inventory-folding/build",
+  "command": "C:\\mingw64\\bin\\g++.exe  @CMakeFiles/example.dir/includes_CXX.rsp -g -std=c++17 -o CMakeFiles\\example.dir\\bin\\view\\MainMenu.cpp.obj -c C:\\Users\\Public\\Inventory-folding-master\\Inventory-folding\\bin\\view\\MainMenu.cpp",
+  "file": "C:/Users/Public/Inventory-folding-master/Inventory-folding/bin/view/MainMenu.cpp",
+  "output": "CMakeFiles/example.dir/bin/view/MainMenu.cpp.obj"
+},
+{
+  "directory": "C:/Users/Public/Inventory-folding-master/Inventory-folding/build",
+  "command": "C:\\mingw64\\bin\\g++.exe  @CMakeFiles/example.dir/includes_CXX.rsp -g -std=c++17 -o CMakeFiles\\example.dir\\bin\\view\\GameGUI.cpp.obj -c C:\\Users\\Public\\Inventory-folding-master\\Inventory-folding\\bin\\view\\GameGUI.cpp",
+  "file": "C:/Users/Public/Inventory-folding-master/Inventory-folding/bin/view/GameGUI.cpp",
+  "output": "CMakeFiles/example.dir/bin/view/GameGUI.cpp.obj"
+},
+{
+  "directory": "C:/Users/Public/Inventory-folding-master/Inventory-folding/build",
+  "command": "C:\\mingw64\\bin\\g++.exe  @CMakeFiles/example.dir/includes_CXX.rsp -g -std=c++17 -o CMakeFiles\\example.dir\\bin\\view\\GameResults.cpp.obj -c C:\\Users\\Public\\Inventory-folding-master\\Inventory-folding\\bin\\view\\GameResults.cpp",
+  "file": "C:/Users/Public/Inventory-folding-master/Inventory-folding/bin/view/GameResults.cpp",
+  "output": "CMakeFiles/example.dir/bin/view/GameResults.cpp.obj"
+}
+]

@@ -1,0 +1,3 @@
+C:/Users/Public/Inventory-folding-master/Inventory-folding/build/CMakeFiles/example.dir
+C:/Users/Public/Inventory-folding-master/Inventory-folding/build/CMakeFiles/edit_cache.dir
+C:/Users/Public/Inventory-folding-master/Inventory-folding/build/CMakeFiles/rebuild_cache.dir
