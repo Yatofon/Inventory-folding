@@ -1,0 +1,34 @@
+cmake_minimum_required(VERSION 3.15)
+
+set(PROJECT_NAME example)
+project("${PROJECT_NAME}")
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
+
+add_executable("${PROJECT_NAME}" 
+    main.cpp
+    bin/view/MainMenu.cpp
+    bin/view/GameGUI.cpp
+    bin/view/GameResults.cpp
+    bin/object/Tetramino.cpp
+)
+
+set(SFML_ROOT "${CMAKE_SOURCE_DIR}/bin/bibliotek/SFML")
+
+target_include_directories("${PROJECT_NAME}" PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/bin/bibliotek/include
+    ${SFML_ROOT}/include
+)
+
+target_link_directories("${PROJECT_NAME}" PRIVATE
+    ${SFML_ROOT}/lib
+)
+
+
+target_link_libraries( "${PROJECT_NAME}"
+    sfml-graphics
+    sfml-window
+    sfml-system
+)
