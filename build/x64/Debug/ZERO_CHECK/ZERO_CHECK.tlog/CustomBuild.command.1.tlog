@@ -1,0 +1,10 @@
+^C:\USERS\PUBLIC\INVENTORY-FOLDING\BUILD\CMAKEFILES\FF75D4B3E8EA2EC7BE0A8DD5675D1477\GENERATE.STAMP.RULE
+setlocal
+C:\mingw64\bin\cmake.exe -SC:/Users/Public/Inventory-folding -BC:/Users/Public/Inventory-folding/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/Users/Public/Inventory-folding/build/example.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

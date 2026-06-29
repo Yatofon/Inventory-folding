@@ -2,10 +2,10 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "example.exe"
+			"path" : "Release/example.exe"
 		},
 		{
-			"path" : "example.pdb"
+			"path" : "Release/example.pdb"
 		}
 	],
 	"backtrace" : 1,
@@ -36,19 +36,19 @@
 			{
 				"command" : 1,
 				"file" : 0,
-				"line" : 24,
+				"line" : 25,
 				"parent" : 0
 			},
 			{
 				"command" : 2,
 				"file" : 0,
-				"line" : 29,
+				"line" : 30,
 				"parent" : 0
 			},
 			{
 				"command" : 3,
 				"file" : 0,
-				"line" : 19,
+				"line" : 20,
 				"parent" : 0
 			}
 		]
@@ -59,18 +59,18 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "-g -std=c++17"
+					"fragment" : "/DWIN32 /D_WINDOWS /GR /EHsc /O2 /Ob2 /DNDEBUG -std:c++17 -MD"
 				}
 			],
 			"includes" : 
 			[
 				{
 					"backtrace" : 4,
-					"path" : "C:/Users/Public/Inventory-folding-master/Inventory-foldingbin/bibliotek/include"
+					"path" : "C:/Users/Public/Inventory-folding/bin/bibliotek/include"
 				},
 				{
 					"backtrace" : 4,
-					"path" : "C:/Users/Public/Inventory-folding-master/Inventory-folding/bin/bibliotek/SFML/include"
+					"path" : "C:/Users/Public/Inventory-folding/bin/bibliotek/SFML/include"
 				}
 			],
 			"language" : "CXX",
@@ -87,8 +87,15 @@
 				0,
 				1,
 				2,
-				3
+				3,
+				4
 			]
+		}
+	],
+	"dependencies" : 
+	[
+		{
+			"id" : "ZERO_CHECK::@6890427a1f51a3e7e1df"
 		}
 	],
 	"id" : "example::@6890427a1f51a3e7e1df",
@@ -97,35 +104,35 @@
 		"commandFragments" : 
 		[
 			{
-				"fragment" : "-g",
+				"fragment" : "/DWIN32 /D_WINDOWS /GR /EHsc /O2 /Ob2 /DNDEBUG -MD",
 				"role" : "flags"
 			},
 			{
-				"fragment" : "",
+				"fragment" : "/machine:x64 /INCREMENTAL:NO /subsystem:console",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-LC:\\Users\\Public\\Inventory-folding-master\\Inventory-folding\\bin\\bibliotek\\SFML\\lib",
+				"fragment" : "-LIBPATH:C:\\Users\\Public\\Inventory-folding\\bin\\bibliotek\\SFML\\lib",
 				"role" : "libraryPath"
 			},
 			{
 				"backtrace" : 3,
-				"fragment" : "-lsfml-graphics",
+				"fragment" : "sfml-graphics.lib",
 				"role" : "libraries"
 			},
 			{
 				"backtrace" : 3,
-				"fragment" : "-lsfml-window",
+				"fragment" : "sfml-window.lib",
 				"role" : "libraries"
 			},
 			{
 				"backtrace" : 3,
-				"fragment" : "-lsfml-system",
+				"fragment" : "sfml-system.lib",
 				"role" : "libraries"
 			},
 			{
-				"fragment" : "-lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32",
+				"fragment" : "kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib",
 				"role" : "libraries"
 			}
 		],
@@ -147,7 +154,8 @@
 				0,
 				1,
 				2,
-				3
+				3,
+				4
 			]
 		}
 	],
@@ -175,6 +183,12 @@
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
 			"path" : "bin/view/GameResults.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "bin/object/Tetramino.cpp",
 			"sourceGroupIndex" : 0
 		}
 	],
