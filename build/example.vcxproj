@@ -333,6 +333,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClCompile Include="C:\Users\Public\Inventory-folding\bin\view\GameGUI.cpp" />
     <ClCompile Include="C:\Users\Public\Inventory-folding\bin\view\GameResults.cpp" />
     <ClCompile Include="C:\Users\Public\Inventory-folding\bin\object\Tetramino.cpp" />
+    <ClCompile Include="C:\Users\Public\Inventory-folding\bin\object\Inventory.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="C:\Users\Public\Inventory-folding\build\ZERO_CHECK.vcxproj">

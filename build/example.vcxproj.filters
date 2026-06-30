@@ -16,6 +16,9 @@
     <ClCompile Include="C:\Users\Public\Inventory-folding\bin\object\Tetramino.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="C:\Users\Public\Inventory-folding\bin\object\Inventory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="C:\Users\Public\Inventory-folding\CMakeLists.txt" />

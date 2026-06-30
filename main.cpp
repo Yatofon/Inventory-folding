@@ -1,4 +1,5 @@
 #include "bin/object/Tetramino.hpp"
+#include "bin/object/Inventory.hpp"
 #include "bin/view/AppStatus.hpp"
 #include "bin/view/MainMenu.hpp"
 #include "bin/view/GameGUI.hpp"
@@ -29,6 +30,10 @@ int main() {
     
     // Сетка для коллизий
     std::vector<std::vector<bool>> grid(10, std::vector<bool>(10, false));
+
+    Inventory inventory(8, 6);
+
+     std::vector<std::vector<bool>> inv_grid(inventory.getGrid());
     
     while (window.isOpen()) {
         while (const std::optional event =window.pollEvent()) {
@@ -50,10 +55,12 @@ int main() {
                 if (keyPressed->code == sf::Keyboard::Key::Space) {
                     // Фиксация фигуры в сетке
                     auto cells = manager.getAbsoluteCells(tetromino);
-                    for (const auto& cell : cells) {
-                        if (cell.y >= 0 && cell.y < grid.size() &&
-                            cell.x >= 0 && cell.x < grid[0].size()) {
-                            grid[cell.y][cell.x] = true;
+                    if (inventory.ValidInInventory(cells)){
+                        for (const auto& cell : cells) {
+                            if (cell.y >= 0 && cell.y < inv_grid.size() &&
+                                cell.x >= 0 && cell.x < inv_grid[0].size()) {
+                                grid[cell.y][cell.x] = true;
+                            }
                         }
                     }
                 }
@@ -67,7 +74,8 @@ int main() {
         for (int y = 0; y < grid.size(); ++y) {
             for (int x = 0; x < grid[0].size(); ++x) {
                 sf::RectangleShape cell(sf::Vector2f(cellSize - 1, cellSize - 1));
-                sf::Vector2f pos(gridOffset.x + x * cellSize, gridOffset.y + y * cellSize);
+                sf::Vector2f pos(gridOffset.x + x * cellSize, 
+                               gridOffset.y + y * cellSize);
                 cell.setPosition(pos);
                 
                 if (grid[y][x]) {
@@ -80,6 +88,9 @@ int main() {
                 window.draw(cell);
             }
         }
+
+        // Рисуем сетку
+        inventory.draw(window, gridOffset, cellSize);
         
         // Рисуем активную фигуру
         manager.draw(window, tetromino);

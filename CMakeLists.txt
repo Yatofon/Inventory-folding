@@ -13,6 +13,7 @@ add_executable("${PROJECT_NAME}"
     bin/view/GameGUI.cpp
     bin/view/GameResults.cpp
     bin/object/Tetramino.cpp
+    bin/object/Inventory.cpp
 )
 
 set(SFML_ROOT "${CMAKE_SOURCE_DIR}/bin/bibliotek/SFML")
