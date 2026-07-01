@@ -21,4 +21,6 @@ private:
     sf::RectangleShape mainMenuBtn;
     std::unique_ptr<sf::Text> tryAgainText;
     std::unique_ptr<sf::Text> mainMenuText;
+    sf::Texture tryAgainTexture;
+    sf::Texture mainMenuTexture;
 };

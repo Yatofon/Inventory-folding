@@ -16,4 +16,6 @@ private:
     std::unique_ptr<sf::Text> exitText;
     sf::RectangleShape startBtn;
     sf::RectangleShape exitBtn;
+    sf::Texture startTexture;
+    sf::Texture exitTexture;
 };

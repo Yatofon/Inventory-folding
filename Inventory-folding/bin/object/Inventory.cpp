@@ -22,6 +22,37 @@
         }
         return false;
     }
+
+    bool Inventory::placeItem(int x, int y) {
+    if (x < 0 || x >= width || y < 0 || y >= height) {
+        return false;
+    }
+    if (grid[y][x]) {
+        return false; // Клетка уже занята
+    }
+    grid[y][x] = true;
+    return true;
+}
+
+// Размещение предмета по списку клеток
+bool Inventory::placeItem(const std::vector<sf::Vector2i>& cells) {
+    // Сначала проверяем, можно ли разместить
+    for (const auto& cell : cells) {
+        if (cell.x < 0 || cell.x >= width || 
+            cell.y < 0 || cell.y >= height) {
+            return false;
+        }
+        if (grid[cell.y][cell.x]) {
+            return false; // Клетка уже занята
+        }
+    }
+    
+    // Размещаем
+    for (const auto& cell : cells) {
+        grid[cell.y][cell.x] = true;
+    }
+    return true;
+}
     
     // Удаление предмета (очистка клеток)
     bool Inventory::removeItem(const Tetromino& item, sf::Vector2i position) {
@@ -68,18 +99,22 @@
                 }
                 
                 cell.setOutlineColor(sf::Color::Green);
-                cell.setOutlineThickness(0.5f);
+                cell.setOutlineThickness(1);
                 window.draw(cell);
             }
         }
     }
 
     //Находится ли предмет в инвентаре
-    bool Inventory::ValidInInventory(std::vector<sf::Vector2i>& cells){
+    bool Inventory::ValidInInventory(std::vector<sf::Vector2i>& cells) const{
         for (const auto& cell : cells) {
             if (cell.x < 0 || cell.x > width-1 ||
                 cell.y < 0 || cell.y > height-1){
                     return false;
+            }
+
+            if (grid[cell.y][cell.x]) {
+                return false; // Клетка уже занята
             }
         }
         return true;

@@ -95,6 +95,31 @@ using json = nlohmann::json;
             window.draw(cell);
         }
     }
+
+    void TetrominoManager::drawWithAlpha(sf::RenderWindow& window, const Tetromino& tetromino, 
+                                     float alpha) {
+    if (tetromino.shape.empty() || cellSize <= 0.0f) {
+        return;
+    }
+    
+    auto pixelPositions = tetromino.getPixelPositions(cellSize, gridOffset);
+    if (pixelPositions.empty()) {
+        return;
+    }
+    
+    sf::Color colorWithAlpha = tetromino.color;
+    // Используем std::uint8_t вместо sf::Uint8
+    colorWithAlpha.a = static_cast<std::uint8_t>(std::clamp(alpha, 0.0f, 255.0f));
+    
+    for (const auto& pos : pixelPositions) {
+        sf::RectangleShape cell(sf::Vector2f(cellSize - 1, cellSize - 1));
+        cell.setPosition(pos);
+        cell.setFillColor(colorWithAlpha);
+        cell.setOutlineColor(sf::Color::White);
+        cell.setOutlineThickness(0.5f);
+        window.draw(cell);
+    }
+}
     
     // Проверка коллизий с сеткой
     bool TetrominoManager::isValidPosition(const Tetromino& tetromino, 
@@ -167,3 +192,142 @@ using json = nlohmann::json;
         }
         return cells;
     };
+
+    // ============================================
+// DRAG-AND-DROP МЕТОДЫ
+// ============================================
+
+bool TetrominoManager::isPointOnTetromino(const Tetromino& tetromino, sf::Vector2f mousePos) const {
+    if (tetromino.shape.empty()) return false;
+    
+    auto pixelPositions = tetromino.getPixelPositions(cellSize, gridOffset);
+    
+    for (const auto& pos : pixelPositions) {
+        sf::Vector2f position(pos.x, pos.y);
+        sf::Vector2f size(cellSize, cellSize);
+        sf::FloatRect cellRect(position, size);
+        if (cellRect.contains(mousePos)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+sf::Vector2i TetrominoManager::pixelToGrid(sf::Vector2f pixelPos) const {
+    int gridX = static_cast<int>(std::floor((pixelPos.x - gridOffset.x) / cellSize));
+    int gridY = static_cast<int>(std::floor((pixelPos.y - gridOffset.y) / cellSize));
+    return {gridX, gridY};
+}
+
+sf::Vector2f TetrominoManager::gridToPixel(sf::Vector2i gridPos) const {
+    float pixelX = gridOffset.x + gridPos.x * cellSize;
+    float pixelY = gridOffset.y + gridPos.y * cellSize;
+    return {pixelX, pixelY};
+}
+
+bool TetrominoManager::snapToGrid(Tetromino& tetromino, sf::Vector2f mousePos, 
+                                  const std::vector<std::vector<bool>>& grid) {
+    if (tetromino.shape.empty()) return false;
+    
+    // Находим bounding box фигуры
+    int minX = tetromino.shape[0].x;
+    int minY = tetromino.shape[0].y;
+    int maxX = tetromino.shape[0].x;
+    int maxY = tetromino.shape[0].y;
+    for (const auto& cell : tetromino.shape) {
+        minX = std::min(minX, cell.x);
+        minY = std::min(minY, cell.y);
+        maxX = std::max(maxX, cell.x);
+        maxY = std::max(maxY, cell.y);
+    }
+    
+    // Получаем позицию мыши в координатах сетки
+    sf::Vector2i gridPos = pixelToGrid(mousePos);
+    
+    // Вычисляем, какая клетка фигуры ближе всего к позиции мыши
+    // Для этого находим клетку фигуры, на которую наведена мышь
+    sf::Vector2i closestCell = {0, 0};
+    float minDistance = std::numeric_limits<float>::max();
+    
+    auto pixelPositions = tetromino.getPixelPositions(cellSize, gridOffset);
+    for (size_t i = 0; i < pixelPositions.size(); ++i) {
+        // Центр клетки в пикселях
+        sf::Vector2f cellCenter = {
+            pixelPositions[i].x + cellSize / 2.0f,
+            pixelPositions[i].y + cellSize / 2.0f
+        };
+        
+        float distance = std::sqrt(
+            std::pow(mousePos.x - cellCenter.x, 2) +
+            std::pow(mousePos.y - cellCenter.y, 2)
+        );
+        
+        if (distance < minDistance) {
+            minDistance = distance;
+            closestCell = tetromino.shape[i];
+        }
+    }
+    
+    // Теперь вычисляем новую позицию фигуры
+    // Чтобы клетка, на которую наведена мышь, оказалась в позиции gridPos
+    sf::Vector2i newPosition = {
+        gridPos.x - closestCell.x,
+        gridPos.y - closestCell.y
+    };
+    
+    // Пробуем разные варианты привязки (для удобства)
+    std::vector<sf::Vector2i> offsets = {
+        {0, 0}, {1, 0}, {-1, 0}, {0, 1}, {0, -1},
+        {1, 1}, {-1, 1}, {1, -1}, {-1, -1}
+    };
+    
+    Tetromino temp = tetromino;
+    
+    for (const auto& offset : offsets) {
+        temp.position = {
+            newPosition.x + offset.x,
+            newPosition.y + offset.y
+        };
+        
+        if (isValidPosition(temp, grid)) {
+            tetromino.position = temp.position;
+            return true;
+        }
+    }
+    
+    return false;
+}
+
+void TetrominoManager::drawDragging(sf::RenderWindow& window, const Tetromino& tetromino,
+                                    sf::Color highlightColor, float outlineThickness) {
+    if (tetromino.shape.empty() || cellSize <= 0.0f) {
+        return;
+    }
+    
+    auto pixelPositions = tetromino.getPixelPositions(cellSize, gridOffset);
+    if (pixelPositions.empty()) {
+        return;
+    }
+    
+    // Рисуем тень (полупрозрачную копию)
+    sf::Color shadowColor = tetromino.color;
+    shadowColor.a = 100;
+    
+    for (const auto& pos : pixelPositions) {
+        // Основная клетка
+        sf::RectangleShape cell(sf::Vector2f(cellSize - 2, cellSize - 2));
+        cell.setPosition(sf::Vector2f(pos.x + 1, pos.y + 1));
+        cell.setFillColor(tetromino.color);
+        cell.setOutlineColor(highlightColor);
+        cell.setOutlineThickness(outlineThickness);
+        window.draw(cell);
+        
+        // Эффект свечения (дополнительная обводка)
+        sf::RectangleShape glow(sf::Vector2f(cellSize + 4, cellSize + 4));
+        glow.setPosition(sf::Vector2f(pos.x - 2, pos.y - 2));
+        glow.setFillColor(sf::Color::Transparent);
+        glow.setOutlineColor(sf::Color(highlightColor.r, highlightColor.g, highlightColor.b, 50));
+        glow.setOutlineThickness(2);
+        window.draw(glow);
+    }
+}

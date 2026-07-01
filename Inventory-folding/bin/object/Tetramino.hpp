@@ -17,6 +17,22 @@ struct Tetromino {
     std::vector<sf::Vector2f> getPixelPositions(float cellSize, sf::Vector2f offset) const;
 };
 
+// Структура для состояния drag-and-drop
+struct DragState {
+    bool isDragging = false;
+    sf::Vector2i startGridPos;     // Позиция в сетке до начала перетаскивания
+    sf::Vector2f mouseOffset;       // Смещение мыши относительно центра клетки
+    sf::Vector2i grabbedCell;       // Какая клетка фигуры захвачена
+    Tetromino* draggedTetromino = nullptr;
+    sf::Vector2f dragStartMouse;    // Позиция мыши в момент начала drag
+    
+    void reset() {
+        isDragging = false;
+        draggedTetromino = nullptr;
+        grabbedCell = {0, 0};
+    }
+};
+
 
 // Класс TetrominoManager
 class TetrominoManager {
@@ -38,6 +54,14 @@ public:
     // Отрисовка тетрамино
     void draw(sf::RenderWindow& window, const Tetromino& tetromino, 
               const sf::Texture* texture = nullptr);
+
+    void drawWithAlpha(sf::RenderWindow& window, const Tetromino& tetromino, 
+                                     float alpha);
+
+     // Метод для отрисовки с эффектом перетаскивания
+    void drawDragging(sf::RenderWindow& window, const Tetromino& tetromino,
+                      sf::Color highlightColor = sf::Color::Yellow,
+                      float outlineThickness = 3.0f);
     
     // Проверка коллизий с сеткой
     bool isValidPosition(const Tetromino& tetromino, 
@@ -53,4 +77,11 @@ public:
     
     // Получение всех клеток фигуры в абсолютных координатах сетки
     std::vector<sf::Vector2i> getAbsoluteCells(const Tetromino& tetromino);
+
+    // Методы для работы с drag-and-drop
+    bool isPointOnTetromino(const Tetromino& tetromino, sf::Vector2f mousePos) const;
+    sf::Vector2i pixelToGrid(sf::Vector2f pixelPos) const;
+    sf::Vector2f gridToPixel(sf::Vector2i gridPos) const;
+    bool snapToGrid(Tetromino& tetromino, sf::Vector2f mousePos, 
+                    const std::vector<std::vector<bool>>& grid) ;
 };

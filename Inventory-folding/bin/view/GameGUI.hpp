@@ -19,13 +19,27 @@ private:
     std::unique_ptr<sf::Text> title;
     std::unique_ptr<sf::Text> backText;
     std::unique_ptr<sf::Text> endText;
+    std::unique_ptr<sf::Text> descriptionText;
     
     sf::RectangleShape backBtn;
     sf::RectangleShape endBtn;
+    sf::Texture backTexture;
+    sf::Texture endTexture;
 
     TetrominoManager manager;
     Tetromino player;
     std::vector<std::vector<bool>> grid;
     float cellSize = 40.0;
     json data;
+
+     // ===== НОВОЕ: Drag-and-drop состояние =====
+    DragState dragState;
+    sf::Vector2f lastMousePos;
+    
+    // ===== НОВОЕ: Методы drag-and-drop =====
+    void startDrag(const sf::Event& event);
+    void updateDrag(const sf::Event& event);
+    void endDrag(const sf::Event& event);
+    void cancelDrag();
+    bool isMouseOnInventory(sf::Vector2f mousePos) const;
 };

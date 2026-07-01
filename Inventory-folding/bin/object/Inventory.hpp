@@ -18,6 +18,10 @@ public:
         : width(w), height(h), emptyColor(empty), occupiedColor(occupied) {
         grid.resize(height, std::vector<bool>(width, false));
     }
+    
+
+    bool placeItem(int x, int y);
+    bool placeItem(const std::vector<sf::Vector2i>& cells);
 
     // Попытка добавить предмет
     bool addItem(const Tetromino& item, sf::Vector2i position);
@@ -31,7 +35,7 @@ public:
     // Отрисовка инвентаря
     void draw(sf::RenderWindow& window, sf::Vector2f position, float cellSize) const;
 
-    bool ValidInInventory(std::vector<sf::Vector2i>& cells);
+    bool ValidInInventory(std::vector<sf::Vector2i>& cells) const;
 
     // Геттеры
     int getWidth() const;
