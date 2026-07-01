@@ -219,6 +219,12 @@ sf::Vector2i TetrominoManager::pixelToGrid(sf::Vector2f pixelPos) const {
     return {gridX, gridY};
 }
 
+sf::Vector2i TetrominoManager::InvPixelToGrid(sf::Vector2f pixelPos) const {
+    int gridX = static_cast<int>(std::floor(pixelPos.x / cellSize));
+    int gridY = static_cast<int>(std::floor(pixelPos.y / cellSize));
+    return {gridX, gridY};
+}
+
 sf::Vector2f TetrominoManager::gridToPixel(sf::Vector2i gridPos) const {
     float pixelX = gridOffset.x + gridPos.x * cellSize;
     float pixelY = gridOffset.y + gridPos.y * cellSize;

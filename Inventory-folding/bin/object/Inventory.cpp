@@ -108,8 +108,8 @@ bool Inventory::placeItem(const std::vector<sf::Vector2i>& cells) {
     //Находится ли предмет в инвентаре
     bool Inventory::ValidInInventory(std::vector<sf::Vector2i>& cells) const{
         for (const auto& cell : cells) {
-            if (cell.x < 0 || cell.x > width-1 ||
-                cell.y < 0 || cell.y > height-1){
+            if (cell.x < 0 || cell.x > width ||
+                cell.y < 0 || cell.y > height){
                     return false;
             }
 
