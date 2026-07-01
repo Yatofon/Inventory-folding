@@ -370,4 +370,5 @@ CMakeFiles/example.dir/main.cpp.obj: \
  C:/Users/Public/Inventory-folding-master/Inventory-folding/bin/bibliotek/include/nlohmann/detail/macro_unscope.hpp \
  C:/Users/Public/Inventory-folding-master/Inventory-folding/bin/bibliotek/include/nlohmann/thirdparty/hedley/hedley_undef.hpp \
  C:/Users/Public/Inventory-folding-master/Inventory-folding/bin/object/Inventory.hpp \
- C:\Users\Public\Inventory-folding-master\Inventory-folding\bin/view/GameResults.hpp
+ C:\Users\Public\Inventory-folding-master\Inventory-folding\bin/view/GameResults.hpp \
+ C:/mingw64/include/c++/14.2.0/iostream

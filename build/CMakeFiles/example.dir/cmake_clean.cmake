@@ -1,6 +1,4 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/example.dir/bin/object/DragManager.cpp.obj"
-  "CMakeFiles/example.dir/bin/object/DragManager.cpp.obj.d"
   "CMakeFiles/example.dir/bin/object/Inventory.cpp.obj"
   "CMakeFiles/example.dir/bin/object/Inventory.cpp.obj.d"
   "CMakeFiles/example.dir/bin/object/Tetramino.cpp.obj"

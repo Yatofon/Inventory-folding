@@ -5,7 +5,7 @@
 class GameResults
 {
 public:
-    GameResults();
+    GameResults(int completedTasks = 0);
     void handleEvent(const sf::Event& event, sf::RenderWindow& window);
     void render(sf::RenderWindow& window);
 private:
@@ -16,6 +16,8 @@ private:
     std::unique_ptr<sf::Text> totalCostText;
     std::unique_ptr<sf::Text> itemCountText;
     std::unique_ptr<sf::Text> usedCellsText;
+    std::unique_ptr<sf::Text> completedTasksText;
+    int completedTasks;
 
     sf::RectangleShape tryAgainBtn;
     sf::RectangleShape mainMenuBtn;

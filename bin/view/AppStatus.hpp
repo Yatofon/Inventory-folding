@@ -5,3 +5,4 @@ namespace AppStatus
     const int GAMERESULTS = 2;
 }
 extern int currentAppStatus;
+extern int lastCompletedTasks;

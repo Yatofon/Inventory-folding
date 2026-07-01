@@ -61,7 +61,16 @@ using json = nlohmann::json;
     // Создание тетрамино из JSON
     Tetromino TetrominoManager::createFromJSON(const json& data) {
         Tetromino tetromino;
-        tetromino.color = sf::Color( 208, 7, 5);
+        if (data.contains("color")) {
+        tetromino.color = sf::Color(
+            data["color"][0].get<int>(),
+            data["color"][1].get<int>(),
+            data["color"][2].get<int>()
+        );
+    } else {
+        // Цвет по умолчанию, если не указан
+        tetromino.color = sf::Color(208, 7, 5); // Красный
+    }
         
         // Парсим форму из [[0,0],[1,0],...]
         for (const auto& coord : data["shape"]) {

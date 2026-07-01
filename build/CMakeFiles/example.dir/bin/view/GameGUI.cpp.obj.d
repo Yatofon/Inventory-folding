@@ -374,4 +374,7 @@ CMakeFiles/example.dir/bin/view/GameGUI.cpp.obj: \
  C:/mingw64/include/c++/14.2.0/x86_64-w64-mingw32/bits/c++io.h \
  C:/mingw64/include/c++/14.2.0/bits/fstream.tcc \
  C:/mingw64/include/c++/14.2.0/iostream \
- C:\Users\Public\Inventory-folding-master\Inventory-folding\bin\view\GameStats.hpp
+ C:\Users\Public\Inventory-folding-master\Inventory-folding\bin\view\GameStats.hpp \
+ C:/mingw64/include/c++/14.2.0/set \
+ C:/mingw64/include/c++/14.2.0/bits/stl_set.h \
+ C:/mingw64/include/c++/14.2.0/bits/stl_multiset.h

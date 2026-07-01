@@ -128,30 +128,6 @@ example/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\example.dir\build.make CMakeFiles/example.dir/build
 .PHONY : example/fast
 
-bin/object/DragManager.obj: bin/object/DragManager.cpp.obj
-.PHONY : bin/object/DragManager.obj
-
-# target to build an object file
-bin/object/DragManager.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\example.dir\build.make CMakeFiles/example.dir/bin/object/DragManager.cpp.obj
-.PHONY : bin/object/DragManager.cpp.obj
-
-bin/object/DragManager.i: bin/object/DragManager.cpp.i
-.PHONY : bin/object/DragManager.i
-
-# target to preprocess a source file
-bin/object/DragManager.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\example.dir\build.make CMakeFiles/example.dir/bin/object/DragManager.cpp.i
-.PHONY : bin/object/DragManager.cpp.i
-
-bin/object/DragManager.s: bin/object/DragManager.cpp.s
-.PHONY : bin/object/DragManager.s
-
-# target to generate assembly for a file
-bin/object/DragManager.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\example.dir\build.make CMakeFiles/example.dir/bin/object/DragManager.cpp.s
-.PHONY : bin/object/DragManager.cpp.s
-
 bin/object/Inventory.obj: bin/object/Inventory.cpp.obj
 .PHONY : bin/object/Inventory.obj
 
@@ -305,9 +281,6 @@ help:
 	@echo ... edit_cache
 	@echo ... rebuild_cache
 	@echo ... example
-	@echo ... bin/object/DragManager.obj
-	@echo ... bin/object/DragManager.i
-	@echo ... bin/object/DragManager.s
 	@echo ... bin/object/Inventory.obj
 	@echo ... bin/object/Inventory.i
 	@echo ... bin/object/Inventory.s

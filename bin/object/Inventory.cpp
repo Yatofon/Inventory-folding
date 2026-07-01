@@ -77,33 +77,49 @@ bool Inventory::placeItem(const std::vector<sf::Vector2i>& cells) {
     
     
     // Очистка инвентаря
-    void Inventory::clear() {
-        for (auto& row : grid) {
-            std::fill(row.begin(), row.end(), false);
-        }
+void Inventory::clear() {
+    for (auto& row : grid) {
+        std::fill(row.begin(), row.end(), false);
     }
-    
-    // Отрисовка инвентаря
-    void Inventory::draw(sf::RenderWindow& window, sf::Vector2f position, float cellSize) const {
-        for (int y = 0; y < height; ++y) {
-            for (int x = 0; x < width; ++x) {
-                sf::RectangleShape cell(sf::Vector2f(cellSize - 1, cellSize - 1));
-                sf::Vector2f pos(position.x + x * cellSize, 
-                               position.y + y * cellSize);
-                cell.setPosition(pos);
-                
-                if (grid[y][x]) {
-                    cell.setFillColor(occupiedColor);
-                } else {
-                    cell.setFillColor(emptyColor);
+    storedItems.clear(); // Очищаем сохраненные предметы
+}
+
+// Обновите метод draw для отрисовки с сохраненными цветами
+void Inventory::draw(sf::RenderWindow& window, sf::Vector2f position, float cellSize) const {
+    // Сначала рисуем пустые клетки
+    for (int y = 0; y < height; ++y) {
+        for (int x = 0; x < width; ++x) {
+            sf::RectangleShape cell(sf::Vector2f(cellSize - 1, cellSize - 1));
+            sf::Vector2f pos(position.x + x * cellSize, 
+                           position.y + y * cellSize);
+            cell.setPosition(pos);
+            
+            if (grid[y][x]) {
+                // Проверяем, есть ли предмет в этой клетке
+                bool found = false;
+                for (const auto& item : storedItems) {
+                    for (const auto& cellPos : item.cells) {
+                        if (cellPos.x == x && cellPos.y == y) {
+                            cell.setFillColor(item.color);
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (found) break;
                 }
-                
-                cell.setOutlineColor(sf::Color::Green);
-                cell.setOutlineThickness(1);
-                window.draw(cell);
+                if (!found) {
+                    cell.setFillColor(occupiedColor);
+                }
+            } else {
+                cell.setFillColor(emptyColor);
             }
+            
+            cell.setOutlineColor(sf::Color::Green);
+            cell.setOutlineThickness(1);
+            window.draw(cell);
         }
     }
+}
 
     //Находится ли предмет в инвентаре
     bool Inventory::ValidInInventory(std::vector<sf::Vector2i>& cells) const{
@@ -147,3 +163,34 @@ bool Inventory::placeItem(const std::vector<sf::Vector2i>& cells) {
         
         return data;
     }
+
+    // Размещение предмета с сохранением цвета
+bool Inventory::placeItemWithColor(const Tetromino& tetromino, 
+                                   const std::vector<sf::Vector2i>& cells,
+                                   sf::Color color) {
+    // Сначала проверяем, можно ли разместить
+    for (const auto& cell : cells) {
+        if (cell.x < 0 || cell.x >= width || 
+            cell.y < 0 || cell.y >= height) {
+            return false;
+        }
+        if (grid[cell.y][cell.x]) {
+            return false;
+        }
+    }
+    
+    // Размещаем в сетке
+    for (const auto& cell : cells) {
+        grid[cell.y][cell.x] = true;
+    }
+    
+    // Сохраняем предмет с цветом
+    StoredItem item;
+    item.tetromino = tetromino;
+    item.position = tetromino.position;
+    item.color = color;
+    item.cells = cells;
+    storedItems.push_back(item);
+    
+    return true;
+}

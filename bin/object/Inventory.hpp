@@ -4,9 +4,17 @@
 #include <vector>
 #include <SFML/Graphics.hpp>
 
+struct StoredItem {
+    Tetromino tetromino;
+    sf::Vector2i position;
+    sf::Color color;
+    std::vector<sf::Vector2i> cells;
+};
+
 class Inventory {
 private:
     std::vector<std::vector<bool>> grid;
+    std::vector<StoredItem> storedItems; // Храним все предметы с их цветами
     int width;
     int height;
     sf::Color emptyColor;
@@ -42,6 +50,14 @@ public:
     int getHeight() const;
     std::vector<std::vector<bool>> getGrid() const;
     bool isOccupied(int x, int y) const;
+
+    // Новый метод для размещения с сохранением цвета
+    bool placeItemWithColor(const Tetromino& tetromino, 
+                           const std::vector<sf::Vector2i>& cells,
+                           sf::Color color);
+    
+    // Получить все сохраненные предметы
+    const std::vector<StoredItem>& getStoredItems() const { return storedItems; }
 
     // Сохранение в JSON
     json toJSON() const;
