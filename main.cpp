@@ -7,28 +7,34 @@
 int currentAppStatus = AppStatus::MAINMENU;
 
 int main() {
-    sf::RenderWindow window(sf::VideoMode({1800, 900}), "Inventory Folding");
+    sf::RenderWindow window(sf::VideoMode({1600, 900}), "Inventory Folding");
     window.setFramerateLimit(60);
+    
+    MainMenu mainMenu;
+    GameGUI gameGUI;
+    GameResults gameResults;
 
     while (window.isOpen()) {
         while (const auto event = window.pollEvent()) {
             if (event->is<sf::Event::Closed>())
                 window.close();
+
+            if (currentAppStatus == AppStatus::MAINMENU)
+                mainMenu.handleEvent(*event, window);
+            if (currentAppStatus == AppStatus::GAMEGUI)
+                gameGUI.handleEvent(*event, window);
+            if (currentAppStatus == AppStatus::GAMERESULTS)
+                gameResults.handleEvent(*event, window);
         }
 
-        window.clear(sf::Color::Black);
+        window.clear(sf::Color(255, 150, 250));
 
-        switch (currentAppStatus) {
-            case AppStatus::MAINMENU:
-                MainMenu(window);
-                break;
-            case AppStatus::GAMEGUI:
-                GameGUI(window);
-                break;
-            case AppStatus::GAMERESULTS:
-                GameResults(window);
-                break;
-        }
+        if (currentAppStatus == AppStatus::MAINMENU)
+            mainMenu.render(window);
+        else if (currentAppStatus == AppStatus::GAMEGUI)
+            gameGUI.render(window);
+        else if (currentAppStatus == AppStatus::GAMERESULTS)
+            gameResults.render(window);
 
         window.display();
     }
