@@ -1,0 +1,16 @@
+# ninja log v7
+8	1409	8045699457152084	CMakeFiles/example.dir/bin/view/MainMenu.cpp.obj	a6baa33b12e53d47
+15	1457	8045699457222154	CMakeFiles/example.dir/bin/view/GameResults.cpp.obj	7545102fcac1ce72
+4	1786	8045699457112044	CMakeFiles/example.dir/main.cpp.obj	ddecd9110ba73637
+19	2059	8045699457292212	CMakeFiles/example.dir/bin/object/Tetramino.cpp.obj	a55e273a7d25a463
+25	2404	8045699457332244	CMakeFiles/example.dir/bin/object/Inventory.cpp.obj	fced6a7ea2d22188
+11	2832	8045699457182119	CMakeFiles/example.dir/bin/view/GameGUI.cpp.obj	1a5a599c029e3ae0
+2833	3053	8045699485406776	example.exe	8d8fbe5dcb59d64b
+9	1367	8045699830705557	CMakeFiles/example.dir/main.cpp.obj	ddecd9110ba73637
+1368	1592	8045699844288436	example.exe	8d8fbe5dcb59d64b
+30	1163	8045703655084889	CMakeFiles/example.dir/bin/view/GameResults.cpp.obj	7545102fcac1ce72
+23	1502	8045703655014810	CMakeFiles/example.dir/main.cpp.obj	ddecd9110ba73637
+27	2532	8045703655044840	CMakeFiles/example.dir/bin/view/GameGUI.cpp.obj	1a5a599c029e3ae0
+2533	2755	8045703680110820	example.exe	8d8fbe5dcb59d64b
+22	3200	8045704318919022	CMakeFiles/example.dir/bin/view/GameResults.cpp.obj	7545102fcac1ce72
+3201	3405	8045704350715783	example.exe	8d8fbe5dcb59d64b

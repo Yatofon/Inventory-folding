@@ -128,6 +128,54 @@ example/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\example.dir\build.make CMakeFiles/example.dir/build
 .PHONY : example/fast
 
+bin/object/Inventory.obj: bin/object/Inventory.cpp.obj
+.PHONY : bin/object/Inventory.obj
+
+# target to build an object file
+bin/object/Inventory.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\example.dir\build.make CMakeFiles/example.dir/bin/object/Inventory.cpp.obj
+.PHONY : bin/object/Inventory.cpp.obj
+
+bin/object/Inventory.i: bin/object/Inventory.cpp.i
+.PHONY : bin/object/Inventory.i
+
+# target to preprocess a source file
+bin/object/Inventory.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\example.dir\build.make CMakeFiles/example.dir/bin/object/Inventory.cpp.i
+.PHONY : bin/object/Inventory.cpp.i
+
+bin/object/Inventory.s: bin/object/Inventory.cpp.s
+.PHONY : bin/object/Inventory.s
+
+# target to generate assembly for a file
+bin/object/Inventory.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\example.dir\build.make CMakeFiles/example.dir/bin/object/Inventory.cpp.s
+.PHONY : bin/object/Inventory.cpp.s
+
+bin/object/Tetramino.obj: bin/object/Tetramino.cpp.obj
+.PHONY : bin/object/Tetramino.obj
+
+# target to build an object file
+bin/object/Tetramino.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\example.dir\build.make CMakeFiles/example.dir/bin/object/Tetramino.cpp.obj
+.PHONY : bin/object/Tetramino.cpp.obj
+
+bin/object/Tetramino.i: bin/object/Tetramino.cpp.i
+.PHONY : bin/object/Tetramino.i
+
+# target to preprocess a source file
+bin/object/Tetramino.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\example.dir\build.make CMakeFiles/example.dir/bin/object/Tetramino.cpp.i
+.PHONY : bin/object/Tetramino.cpp.i
+
+bin/object/Tetramino.s: bin/object/Tetramino.cpp.s
+.PHONY : bin/object/Tetramino.s
+
+# target to generate assembly for a file
+bin/object/Tetramino.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\example.dir\build.make CMakeFiles/example.dir/bin/object/Tetramino.cpp.s
+.PHONY : bin/object/Tetramino.cpp.s
+
 bin/view/GameGUI.obj: bin/view/GameGUI.cpp.obj
 .PHONY : bin/view/GameGUI.obj
 
@@ -233,6 +281,12 @@ help:
 	@echo ... edit_cache
 	@echo ... rebuild_cache
 	@echo ... example
+	@echo ... bin/object/Inventory.obj
+	@echo ... bin/object/Inventory.i
+	@echo ... bin/object/Inventory.s
+	@echo ... bin/object/Tetramino.obj
+	@echo ... bin/object/Tetramino.i
+	@echo ... bin/object/Tetramino.s
 	@echo ... bin/view/GameGUI.obj
 	@echo ... bin/view/GameGUI.i
 	@echo ... bin/view/GameGUI.s

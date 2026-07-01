@@ -1,4 +1,8 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/example.dir/bin/object/Inventory.cpp.obj"
+  "CMakeFiles/example.dir/bin/object/Inventory.cpp.obj.d"
+  "CMakeFiles/example.dir/bin/object/Tetramino.cpp.obj"
+  "CMakeFiles/example.dir/bin/object/Tetramino.cpp.obj.d"
   "CMakeFiles/example.dir/bin/view/GameGUI.cpp.obj"
   "CMakeFiles/example.dir/bin/view/GameGUI.cpp.obj.d"
   "CMakeFiles/example.dir/bin/view/GameResults.cpp.obj"

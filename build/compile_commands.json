@@ -22,5 +22,17 @@
   "command": "C:\\mingw64\\bin\\g++.exe  @CMakeFiles/example.dir/includes_CXX.rsp -g -std=c++17 -o CMakeFiles\\example.dir\\bin\\view\\GameResults.cpp.obj -c C:\\Users\\Public\\Inventory-folding-master\\Inventory-folding\\bin\\view\\GameResults.cpp",
   "file": "C:/Users/Public/Inventory-folding-master/Inventory-folding/bin/view/GameResults.cpp",
   "output": "CMakeFiles/example.dir/bin/view/GameResults.cpp.obj"
+},
+{
+  "directory": "C:/Users/Public/Inventory-folding-master/Inventory-folding/build",
+  "command": "C:\\mingw64\\bin\\g++.exe  @CMakeFiles/example.dir/includes_CXX.rsp -g -std=c++17 -o CMakeFiles\\example.dir\\bin\\object\\Tetramino.cpp.obj -c C:\\Users\\Public\\Inventory-folding-master\\Inventory-folding\\bin\\object\\Tetramino.cpp",
+  "file": "C:/Users/Public/Inventory-folding-master/Inventory-folding/bin/object/Tetramino.cpp",
+  "output": "CMakeFiles/example.dir/bin/object/Tetramino.cpp.obj"
+},
+{
+  "directory": "C:/Users/Public/Inventory-folding-master/Inventory-folding/build",
+  "command": "C:\\mingw64\\bin\\g++.exe  @CMakeFiles/example.dir/includes_CXX.rsp -g -std=c++17 -o CMakeFiles\\example.dir\\bin\\object\\Inventory.cpp.obj -c C:\\Users\\Public\\Inventory-folding-master\\Inventory-folding\\bin\\object\\Inventory.cpp",
+  "file": "C:/Users/Public/Inventory-folding-master/Inventory-folding/bin/object/Inventory.cpp",
+  "output": "CMakeFiles/example.dir/bin/object/Inventory.cpp.obj"
 }
 ]
