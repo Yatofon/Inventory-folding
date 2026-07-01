@@ -1,10 +1,17 @@
 #include "MainMenu.hpp"
 #include "AppStatus.hpp"
-
+#include <iostream>
 MainMenu::MainMenu()
 {
     fontLoaded = font.openFromFile("Tokushupikuseru-Regular.otf");
     
+    if (!startTexture.loadFromFile("BtnBackground.jpg")) {
+        std::cout << "Не удалось загрузить текстуру Start!" << std::endl;
+    }
+    if (!exitTexture.loadFromFile("BtnBackground.jpg")) {
+        std::cout << "Не удалось загрузить текстуру Exit!" << std::endl;
+    }
+
     float winWidth = 1600.0;
     float winHeight = 900.0;
     
@@ -12,7 +19,7 @@ MainMenu::MainMenu()
     {
         title = std::make_unique<sf::Text>(font, "Inventory Folding", 120);
         title->setPosition({520.f, 150.f});
-        title->setFillColor(sf::Color::Black);
+        title->setFillColor(sf::Color::White);
 
         startText = std::make_unique<sf::Text>(font, "START", 60);
         startText->setPosition({755.f, 440.f});
@@ -24,11 +31,11 @@ MainMenu::MainMenu()
     }
     startBtn.setSize({300, 80});
     startBtn.setPosition({650.f, 450.f});
-    startBtn.setFillColor(sf::Color::Magenta);
+    startBtn.setTexture(&startTexture);
 
     exitBtn.setSize({300, 80});
     exitBtn.setPosition({650.f, 600.f});
-    exitBtn.setFillColor(sf::Color(255, 150, 150));
+    exitBtn.setTexture(&exitTexture);
 }
 
 void MainMenu::handleEvent(const sf::Event& event, sf::RenderWindow& window)

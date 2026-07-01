@@ -302,4 +302,5 @@ CMakeFiles/example.dir/bin/view/MainMenu.cpp.obj: \
  C:/Users/Public/Inventory-folding-master/Inventory-folding/bin/bibliotek/SFML/include/SFML/System/Sleep.hpp \
  C:/Users/Public/Inventory-folding-master/Inventory-folding/bin/bibliotek/SFML/include/SFML/System/TimeoutWithPredicate.hpp \
  C:/Users/Public/Inventory-folding-master/Inventory-folding/bin/bibliotek/SFML/include/SFML/System/Version.hpp \
- C:\Users\Public\Inventory-folding-master\Inventory-folding\bin\view\AppStatus.hpp
+ C:\Users\Public\Inventory-folding-master\Inventory-folding\bin\view\AppStatus.hpp \
+ C:/mingw64/include/c++/14.2.0/iostream

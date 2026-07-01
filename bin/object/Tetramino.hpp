@@ -81,6 +81,7 @@ public:
     // Методы для работы с drag-and-drop
     bool isPointOnTetromino(const Tetromino& tetromino, sf::Vector2f mousePos) const;
     sf::Vector2i pixelToGrid(sf::Vector2f pixelPos) const;
+    sf::Vector2i InvPixelToGrid(sf::Vector2f pixelPos) const;
     sf::Vector2f gridToPixel(sf::Vector2i gridPos) const;
     bool snapToGrid(Tetromino& tetromino, sf::Vector2f mousePos, 
                     const std::vector<std::vector<bool>>& grid) ;

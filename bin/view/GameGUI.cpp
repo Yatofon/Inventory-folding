@@ -7,7 +7,7 @@
 #include "GameStats.hpp"
 
 const sf::Vector2f gridOffset({100.f, 200.f});
-const sf::Vector2f inventoryOffset({600.f, 200.f});
+const sf::Vector2f inventoryOffset({540.f, 200.f});
 
 std::ifstream file("../data/static/BD/item.json");
 
@@ -27,6 +27,9 @@ GameGUI::GameGUI()
     file >> data;
     player = manager.createFromJSON(data["2"]);
     
+    backTexture.loadFromFile("BtnBackground.jpg");
+    endTexture.loadFromFile("BtnBackground.jpg");
+
     float winWidth = 1600.f;
     float winHeight = 900.f;
 
@@ -34,7 +37,7 @@ GameGUI::GameGUI()
     {
         title = std::make_unique<sf::Text>(font, "Game Screen", 120);
         title->setPosition({600.f, -50.f});
-        title->setFillColor(sf::Color::Black);
+        title->setFillColor(sf::Color::White);
 
         backText = std::make_unique<sf::Text>(font, "Back", 60);
         backText->setPosition({130.f, 790.f});
@@ -47,11 +50,11 @@ GameGUI::GameGUI()
 
     backBtn.setSize({300, 80});
     backBtn.setPosition({20.f, 800.f});
-    backBtn.setFillColor(sf::Color::Magenta);
+    backBtn.setTexture(&backTexture);
 
     endBtn.setSize({300, 80});
     endBtn.setPosition({1280.f, 800.f});
-    endBtn.setFillColor(sf::Color(255, 150, 150));
+    endBtn.setTexture(&endTexture);
 }
 
 GameGUI::~GameGUI() = default;

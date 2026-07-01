@@ -19,9 +19,12 @@ private:
     std::unique_ptr<sf::Text> title;
     std::unique_ptr<sf::Text> backText;
     std::unique_ptr<sf::Text> endText;
+    std::unique_ptr<sf::Text> descriptionText;
     
     sf::RectangleShape backBtn;
     sf::RectangleShape endBtn;
+    sf::Texture backTexture;
+    sf::Texture endTexture;
 
     TetrominoManager manager;
     Tetromino player;

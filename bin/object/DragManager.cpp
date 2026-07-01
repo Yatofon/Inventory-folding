@@ -5,7 +5,7 @@
 #include <iostream>
 
 const sf::Vector2f gridOffset({100.f, 200.f});
-const sf::Vector2f inventoryOffset({600.f, 200.f});
+const sf::Vector2f inventoryOffset({540.f, 200.f});
 
 // ============================================
 // DRAG-AND-DROP МЕТОДЫ
@@ -120,18 +120,52 @@ void GameGUI::endDrag(const sf::Event& event) {
         if (mouseReleased->button == sf::Mouse::Button::Left && dragState.isDragging) {
             sf::Vector2f mousePos(static_cast<float>(mouseReleased->position.x),
                                  static_cast<float>(mouseReleased->position.y));
+
+            std::cout << "End" << std::endl;
             
             // Проверяем, находится ли мышь над инвентарем
             if (isMouseOnInventory(mousePos)) {
                 // Пытаемся разместить фигуру в инвентаре
-                sf::Vector2i inventoryGridPos = manager.pixelToGrid(
+                sf::Vector2i inventoryGridPos = manager.InvPixelToGrid(
                     sf::Vector2f(mousePos.x - inventoryOffset.x, 
                                 mousePos.y - inventoryOffset.y)
                 );
+
                 
                 // Корректируем позицию для инвентаря
                 Tetromino temp = player;
                 temp.position = inventoryGridPos;
+
+                // Находим, за какую клетку фигуры мы держим
+                sf::Vector2i grabbedCell = {0, 0};
+                float minDistance = std::numeric_limits<float>::max();
+        
+                auto pixelPositions = player.getPixelPositions(cellSize, gridOffset);
+                for (size_t i = 0; i < pixelPositions.size(); ++i) {
+                    sf::Vector2f cellCenter = {
+                        pixelPositions[i].x + cellSize / 2.0f,
+                        pixelPositions[i].y + cellSize / 2.0f
+                    };
+            
+                    float distance = std::sqrt(
+                        std::pow(mousePos.x - cellCenter.x, 2) +
+                        std::pow(mousePos.y - cellCenter.y, 2)
+                    );
+            
+                    if (distance < minDistance) {
+                        minDistance = distance;
+                        grabbedCell = player.shape[i];
+                    }
+                }
+        
+        
+                // Вычисляем новую позицию фигуры
+                sf::Vector2i newPosition = {
+                    inventoryGridPos.x - grabbedCell.x,
+                    inventoryGridPos.y - grabbedCell.y
+                };
+
+                temp.position = newPosition;
                 
                 // Получаем абсолютные клетки фигуры
                 auto cells = manager.getAbsoluteCells(temp);
@@ -140,7 +174,7 @@ void GameGUI::endDrag(const sf::Event& event) {
                 if (inventory.ValidInInventory(cells)) {
                     // Размещаем в инвентаре через placeItem
                     if (inventory.placeItem(cells)) {
-                        std::cout << "Item placed in inventory!" << std::endl;
+                        std::cout << "Item placed in inventory!" << cells[0].x << cells[0].y << std::endl;
                         
                         // Создаем новую фигуру
                         std::ifstream file("../data/static/BD/item.json");
@@ -156,48 +190,10 @@ void GameGUI::endDrag(const sf::Event& event) {
                     std::cout << "Cannot place in inventory!" << std::endl;
                 }
             } else {
-                // Пытаемся привязать к сетке
-                if (!manager.snapToGrid(player, mousePos, grid)) {
-                    // Если не удалось привязать, возвращаем на начальную позицию
+                    // Нельзя разместить, возвращаем на начальную позицию
                     player.position = dragState.startGridPos;
-                    std::cout << "Cannot place here, returning to start position" << std::endl;
-                } else {
-                    // Проверяем, можно ли разместить в сетке
-                    auto cells = manager.getAbsoluteCells(player);
-                    bool canPlace = true;
-                    for (const auto& cell : cells) {
-                        if (cell.y < 0 || cell.y >= (int)grid.size() ||
-                            cell.x < 0 || cell.x >= (int)grid[0].size()) {
-                            canPlace = false;
-                            break;
-                        }
-                        if (grid[cell.y][cell.x]) {
-                            canPlace = false;
-                            break;
-                        }
-                    }
-                    
-                    if (canPlace) {
-                        // Размещаем в сетке
-                        for (const auto& cell : cells) {
-                            grid[cell.y][cell.x] = true;
-                        }
-                        std::cout << "Placed at: " << player.position.x << ", " << player.position.y << std::endl;
-                        
-                        // Создаем новую фигуру
-                        std::ifstream file("../data/static/BD/item.json");
-                        if (file.is_open()) {
-                            json newData;
-                            file >> newData;
-                            player = manager.createFromJSON(newData["2"]);
-                        }
-                    } else {
-                        // Нельзя разместить, возвращаем на начальную позицию
-                        player.position = dragState.startGridPos;
-                        std::cout << "Cannot place here!" << std::endl;
-                    }
+                    std::cout << "Cannot place in inventory!" << std::endl;
                 }
-            }
             
             // Сбрасываем состояние перетаскивания
             dragState.reset();
