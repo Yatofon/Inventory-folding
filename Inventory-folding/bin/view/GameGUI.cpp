@@ -23,13 +23,11 @@ GameGUI::GameGUI()
     title(nullptr),
     backText(nullptr),
     endText(nullptr),
-    currentLevel(4)
+    currentLevel(4),
+    completedTasksCount(0),
+    activeFigureIndex(0)
 {
     fontLoaded = font.openFromFile("Tokushupikuseru-Regular.otf");
-
-    std::ifstream file("../data/static/BD/item.json");
-    file >> data;
-    player = manager.createFromJSON(data["20"]);
     
     backTexture.loadFromFile("BtnBackground.jpg");
     endTexture.loadFromFile("BtnBackground.jpg");
@@ -54,6 +52,12 @@ GameGUI::GameGUI()
            allTasks.push_back(tasks);
         }
     }
+
+    loadItems();
+    loadTasks();
+    loadLevel(currentLevel);
+    loadLevelTasks(currentLevel);
+    createDefaultFigure();
 
     loadLevelTasks(currentLevel);
 
@@ -82,12 +86,6 @@ GameGUI::GameGUI()
     endBtn.setSize({300, 80});
     endBtn.setPosition({1280.f, 800.f});
     endBtn.setTexture(&endTexture);
-
-    loadItems();
-    loadTasks();
-    loadLevelTasks(currentLevel);
-
-    createDefaultFigure();
 }
 
 GameGUI::~GameGUI() = default;
@@ -95,7 +93,6 @@ GameGUI::~GameGUI() = default;
 // ============================================
 // DRAG-AND-DROP МЕТОДЫ
 // ============================================
-
 
 bool GameGUI::isMouseOnInventory(sf::Vector2f mousePos) const {
 
@@ -262,15 +259,29 @@ void GameGUI::endDrag(const sf::Event& event) {
                     if (inventory.placeItem(cells)) {
                         std::cout << "Item placed in inventory!" << cells[0].x << cells[0].y << std::endl;
                         
-                        // Создаем новую фигуру
-                        std::ifstream file("../data/static/BD/item.json");
-                        if (file.is_open()) {
-                            json newData;
-                            file >> newData;
-                            player = manager.createFromJSON(newData["2"]);
+                        // Удаляем активную фигуру
+                        if (!availableFigures.empty() && activeFigureIndex < availableFigures.size()) {
+                            availableFigures.erase(availableFigures.begin() + activeFigureIndex);
                         }
+                        
+                        // Обновляем активную фигуру
+                        if (!availableFigures.empty()) {
+                            activeFigureIndex = 0;
+                            player = availableFigures[0];
+                            player.position = {0, 0};
+                        } else {
+                            lastCompletedTasks = completedTasksCount;
+                            currentAppStatus = AppStatus::GAMERESULTS;
+                            dragState.reset();
+                            return;
+                        }
+                        dragState.reset();
+                        return;
+
                     }
-                } else {
+                } 
+                else 
+                {
                     // Нельзя разместить, возвращаем на начальную позицию
                     player.position = dragState.startGridPos;
                     std::cout << "Cannot place in inventory!" << std::endl;
@@ -294,6 +305,90 @@ void GameGUI::cancelDrag() {
         dragState.reset();
         std::cout << "Drag cancelled" << std::endl;
     }
+}
+
+void GameGUI::loadLevelTasks(int level)
+{
+    if (level >= 1 && level <= (int)allTasks.size()) {
+        currentTasks = allTasks[level - 1];
+        for (auto& task : currentTasks)
+            task.completed = false;
+    }
+}
+
+void GameGUI::updateTasksStatus()
+{
+    int totalCost = 0;
+    int usedCells = 0;
+    int itemCount = 0;
+    std::set<std::string> categories;
+}
+
+void GameGUI::loadItems()
+{
+    std::ifstream file("../data/static/BD/item.json");
+    if (!file.is_open()) file.open("data/static/BD/item.json");
+    if (file.is_open()) {
+        json data;
+        file >> data;
+        for (auto& [key, value] : data.items()) {
+            int id = std::stoi(key);
+            itemsData[id] = value;
+        }
+    }
+}
+
+void GameGUI::loadTasks()
+{
+
+}
+
+void GameGUI::createDefaultFigure()
+{
+    if (availableFigures.empty() && itemsData.find(3) != itemsData.end())
+    {
+        Tetromino fig = manager.createFromJSON(itemsData[3]);
+        fig.position = {0, 0};
+        availableFigures.push_back(fig);
+        player = availableFigures[0];
+    }
+}
+
+void GameGUI::loadLevel(int levelID)
+{
+    currentLevelId = levelID;
+    availableFigures.clear();
+
+    std::ifstream file("../data/static/BD/levels.json");
+    if (file.is_open())
+    {
+        json levels;
+        file >> levels;
+        std::string key = std::to_string(levelID);
+        if (levels.contains(key))
+        {
+            availableFigures.clear();
+            float startX = 50.f;
+            float yPos = 200.f;
+
+            for (int id : levels[key])
+            {
+                if (itemsData.find(id) != itemsData.end())
+                {
+                    Tetromino fig = manager.createFromJSON(itemsData[id]);
+                    fig.position = {static_cast<int>(startX/cellSize),
+                                    static_cast<int>(yPos/cellSize)};
+                    availableFigures.push_back(fig);
+                    startX += 50.f;
+                }
+            }
+            if (!availableFigures.empty())
+            {    
+                player = availableFigures[0];
+            }
+        }
+    }
+    loadLevelTasks(levelID);
 }
 
 void GameGUI::handleEvent(const sf::Event& event, sf::RenderWindow& window)
@@ -335,10 +430,21 @@ void GameGUI::handleEvent(const sf::Event& event, sf::RenderWindow& window)
                     case sf::Keyboard::Key::Space: {
                         auto cells = manager.getAbsoluteCells(player);
                         if (inventory.ValidInInventory(cells)) {
-                            for (const auto& cell : cells) {
-                                if (cell.y >= 0 && cell.y < (int)grid.size() &&
-                                    cell.x >= 0 && cell.x < (int)grid[0].size()) {
-                                    grid[cell.y][cell.x] = true;
+                            if (inventory.placeItem(cells)) {
+                                // Удаляем активную фигуру по индексу
+                                if (!availableFigures.empty() && activeFigureIndex < availableFigures.size()) {
+                                    availableFigures.erase(availableFigures.begin() + activeFigureIndex);
+                                }
+                                // Обновляем активную фигуру
+                                if (!availableFigures.empty()) {
+                                    activeFigureIndex = 0; // берём первую из оставшихся
+                                    player = availableFigures[0];
+                                    player.position = {0, 0};
+                                } else {
+                                    // Все фигуры размещены
+                                    lastCompletedTasks = completedTasksCount;
+                                    currentAppStatus = AppStatus::GAMERESULTS;
+                                    return;
                                 }
                             }
                         }
@@ -368,7 +474,9 @@ void GameGUI::handleEvent(const sf::Event& event, sf::RenderWindow& window)
                     GameStats::totalCells = 48;
                     currentAppStatus = AppStatus::MAINMENU;
                 }
-                if (endBtn.getGlobalBounds().contains(mousePos)) {
+                if (endBtn.getGlobalBounds().contains(mousePos)) 
+                {
+                    lastCompletedTasks = completedTasksCount;
                     currentAppStatus = AppStatus::GAMERESULTS;
                 }
             }
@@ -427,7 +535,9 @@ void GameGUI::render(sf::RenderWindow& window)
                 // Можно нарисовать красную обводку
             }
         }
-    } else {
+    } 
+    else 
+    {
         // Обычная отрисовка
         manager.draw(window, player);
     }
@@ -458,45 +568,4 @@ void GameGUI::render(sf::RenderWindow& window)
         if (endText) window.draw(*endText);
     }
 }
-
-void GameGUI::loadLevelTasks(int level)
-{
-    if (level >= 1 && level <= (int)allTasks.size())
-    {
-        currentTasks = allTasks[level - 1];
-        for (auto& task : currentTasks)
-            task.completed = false;
-    }
-}
-
-void GameGUI::updateTasksStatus()
-{
-    int totalCost = 0;
-    int usedCells = 0;
-    int itemCount = 0;
-    std::set<std::string> categories;
-}
-
-void GameGUI::loadItems()
-{
-    std::ifstream file("../data/static/BD/item.json");
-
-    json data;
-    file >> data;
-    for (auto& [key, value] : data.items()) {
-        int id = std::stoi(key);
-        itemsData[id] = value;
-    }
-}
-
-void GameGUI::loadTasks()
-{
-
-}
-
-void GameGUI::createDefaultFigure()
-{
-    player = manager.createFromJSON(itemsData[3]);
-}
-
 

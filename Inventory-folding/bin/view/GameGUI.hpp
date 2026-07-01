@@ -5,6 +5,22 @@
 
 using json = nlohmann::json;
 
+struct DragStateGUI {
+    bool isDragging = false;
+    sf::Vector2f offset;
+    Tetromino* draggedTetromino = nullptr;
+    int figureIndex = -1;
+    sf::Vector2i startGridPos;
+    sf::Vector2f dragStartMouse;
+    sf::Vector2f mouseOffset;
+    sf::Vector2i grabbedCell;
+    
+    void reset() {
+        isDragging = false;
+        figureIndex = -1;
+    }
+};
+
 struct Task {
     float target;
     std::string description;
@@ -33,7 +49,7 @@ public:
     void updateTasksStatus();
     void createDefaultFigure();
     void fixPlayer();
-    
+    void loadLevel(int levelId);
 private:
     Inventory inventory;
 
@@ -54,7 +70,7 @@ private:
     std::vector<std::vector<Task>> allTasks;
     std::vector<Task> currentTasks;
     int currentLevel;
-
+    int completedTasksCount;    
     std::vector<PlacedItem> placedItems;
 
     TetrominoManager manager;
@@ -62,9 +78,14 @@ private:
     std::vector<std::vector<bool>> grid;
     float cellSize = 40.0;
     json data;
+    
+    std::vector<Tetromino> availableFigures;
+    int activeFigureIndex = 0;
+    int currentFigureIndex;
+    int currentLevelId;
 
      // ===== НОВОЕ: Drag-and-drop состояние =====
-    DragState dragState;
+    DragStateGUI dragState;
     sf::Vector2f lastMousePos;
     
     // ===== НОВОЕ: Методы drag-and-drop =====

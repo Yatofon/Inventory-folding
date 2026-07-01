@@ -6,6 +6,7 @@
 #include <iostream>
 
 int currentAppStatus = AppStatus::MAINMENU;
+int lastCompletedTasks = 0;
 
 int main() {
     sf::RenderWindow window(sf::VideoMode({1600, 900}), "Inventory Folding");
@@ -24,7 +25,7 @@ int main() {
 
     MainMenu mainMenu;
     GameGUI gameGUI;
-    GameResults gameResults;
+    GameResults gameResults(lastCompletedTasks);
 
     while (window.isOpen()) {
         while (const auto event = window.pollEvent()) {
