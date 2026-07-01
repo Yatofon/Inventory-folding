@@ -34,5 +34,11 @@
   "command": "C:\\mingw64\\bin\\g++.exe  @CMakeFiles/example.dir/includes_CXX.rsp -g -std=c++17 -o CMakeFiles\\example.dir\\bin\\object\\Inventory.cpp.obj -c C:\\Users\\Public\\Inventory-folding-master\\Inventory-folding\\bin\\object\\Inventory.cpp",
   "file": "C:/Users/Public/Inventory-folding-master/Inventory-folding/bin/object/Inventory.cpp",
   "output": "CMakeFiles/example.dir/bin/object/Inventory.cpp.obj"
+},
+{
+  "directory": "C:/Users/Public/Inventory-folding-master/Inventory-folding/build",
+  "command": "C:\\mingw64\\bin\\g++.exe  @CMakeFiles/example.dir/includes_CXX.rsp -g -std=c++17 -o CMakeFiles\\example.dir\\bin\\object\\DragManager.cpp.obj -c C:\\Users\\Public\\Inventory-folding-master\\Inventory-folding\\bin\\object\\DragManager.cpp",
+  "file": "C:/Users/Public/Inventory-folding-master/Inventory-folding/bin/object/DragManager.cpp",
+  "output": "CMakeFiles/example.dir/bin/object/DragManager.cpp.obj"
 }
 ]
