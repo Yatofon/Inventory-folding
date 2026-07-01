@@ -9,15 +9,17 @@ set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 
 add_executable("${PROJECT_NAME}" 
     main.cpp
-    view/MainMenu.cpp
-    view/GameGUI.cpp
-    view/GameResults.cpp
+    bin/view/MainMenu.cpp
+    bin/view/GameGUI.cpp
+    bin/view/GameResults.cpp
+    bin/object/Tetramino.cpp
+    bin/object/Inventory.cpp
 )
 
-set(SFML_ROOT "${CMAKE_SOURCE_DIR}/SFML")
+set(SFML_ROOT "${CMAKE_SOURCE_DIR}/bin/bibliotek/SFML")
 
 target_include_directories("${PROJECT_NAME}" PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/bin/bibliotek/include
     ${SFML_ROOT}/include
 )
 

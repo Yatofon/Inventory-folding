@@ -1,0 +1,40 @@
+{
+    "tasks": [
+        {
+            "type": "cppbuild",
+            "label": "C/C++: g++.exe сборка активного файла",
+            "command": "C:\\mingw64\\bin\\g++.exe",
+            "args": [
+                "-std=c++17",
+                "-fdiagnostics-color=always",
+                "${workspaceFolder}/bin/view/*.cpp",
+                "${workspaceFolder}/bin/object/*.cpp",
+                "-g",
+                "${file}",
+                "-o",
+                "${fileDirname}\\${fileBasenameNoExtension}.exe",
+                "-I", "${workspaceFolder}/bin/bibliotek/include",
+                "-I", "${workspaceFolder}/bin/object",
+                "-I", "${workspaceFolder}/bin/bibliotek/SFML",
+                "-I", "${workspaceFolder}/bin/bibliotek/SFML/include",
+                "-L", "${workspaceFolder}/bin/bibliotek/SFML/lib",
+                "-I", "${workspaceFolder}/bin/veiw",
+                "-l", "sfml-graphics",
+                "-l", "sfml-window",
+                "-l", "sfml-system"
+            ],
+            "options": {
+                "cwd": "${fileDirname}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "detail": "Задача создана отладчиком."
+        }
+    ],
+    "version": "2.0.0"
+}
