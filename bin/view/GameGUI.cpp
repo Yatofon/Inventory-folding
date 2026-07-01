@@ -31,6 +31,8 @@ GameGUI::GameGUI()
     
     backTexture.loadFromFile("BtnBackground.jpg");
     endTexture.loadFromFile("BtnBackground.jpg");
+    delTexture.loadFromFile("BtnBackground.jpg");
+
 
     std::ifstream taskFile("../data/static/BD/tasks.json");
     if (taskFile.is_open()) 
@@ -77,6 +79,10 @@ GameGUI::GameGUI()
         endText = std::make_unique<sf::Text>(font, "End", 60);
         endText->setPosition({1400.f, 790.f});
         endText->setFillColor(sf::Color::Black);
+
+        delText = std::make_unique<sf::Text>(font, "Delete Item", 60);
+        delText->setPosition({850.f, 790.f});
+        delText->setFillColor(sf::Color::Black);
     }
 
     backBtn.setSize({300, 80});
@@ -86,6 +92,10 @@ GameGUI::GameGUI()
     endBtn.setSize({300, 80});
     endBtn.setPosition({1280.f, 800.f});
     endBtn.setTexture(&endTexture);
+
+    delBtn.setSize({300, 80});
+    delBtn.setPosition({800.f, 800.f});
+    delBtn.setTexture(&delTexture);
 }
 
 GameGUI::~GameGUI() = default;
@@ -479,6 +489,26 @@ void GameGUI::handleEvent(const sf::Event& event, sf::RenderWindow& window)
                     lastCompletedTasks = completedTasksCount;
                     currentAppStatus = AppStatus::GAMERESULTS;
                 }
+                if (delBtn.getGlobalBounds().contains(mousePos)){
+                    // Удаляем активную фигуру
+                        if (!availableFigures.empty() && activeFigureIndex < availableFigures.size()) {
+                            availableFigures.erase(availableFigures.begin() + activeFigureIndex);
+                        }
+                        
+                        // Обновляем активную фигуру
+                        if (!availableFigures.empty()) {
+                            activeFigureIndex = 0;
+                            player = availableFigures[0];
+                            player.position = {0, 0};
+                        } else {
+                            lastCompletedTasks = completedTasksCount;
+                            currentAppStatus = AppStatus::GAMERESULTS;
+                            dragState.reset();
+                            return;
+                        }
+                        dragState.reset();
+                        return;
+                }
             }
         }
     }
@@ -560,12 +590,14 @@ void GameGUI::render(sf::RenderWindow& window)
         }
     }
     
+    window.draw(delBtn);
     window.draw(backBtn);
     window.draw(endBtn);
     if (fontLoaded) {
         if (title) window.draw(*title);
         if (backText) window.draw(*backText);
         if (endText) window.draw(*endText);
+        if (delText) window.draw(*delText);
     }
 }
 

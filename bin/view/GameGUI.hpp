@@ -58,12 +58,15 @@ private:
     std::unique_ptr<sf::Text> title;
     std::unique_ptr<sf::Text> backText;
     std::unique_ptr<sf::Text> endText;
+    std::unique_ptr<sf::Text> delText;
     std::unique_ptr<sf::Text> descriptionText;
     
     sf::RectangleShape backBtn;
     sf::RectangleShape endBtn;
+    sf::RectangleShape delBtn;
     sf::Texture backTexture;
     sf::Texture endTexture;
+    sf::Texture delTexture;
 
     std::map<int, json> itemsData;
 
