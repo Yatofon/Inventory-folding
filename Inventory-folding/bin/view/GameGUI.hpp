@@ -22,6 +22,7 @@ struct DragStateGUI {
 };
 
 struct Task {
+    std::string type;
     float target;
     std::string description;
     bool completed;
@@ -33,7 +34,7 @@ struct PlacedItem
     std::string name;
     int price;
     std::string category;
-    std::vector<sf::Vector2f> cells;
+    std::vector<sf::Vector2i> cells;
 };
 
 class GameGUI
@@ -50,6 +51,9 @@ public:
     void createDefaultFigure();
     void fixPlayer();
     void loadLevel(int levelId);
+    void updateItemDescription();
+    void collectStats();
+    void removePlacedItem(const std::vector<sf::Vector2i>& cells);
 private:
     Inventory inventory;
 
@@ -58,12 +62,16 @@ private:
     std::unique_ptr<sf::Text> title;
     std::unique_ptr<sf::Text> backText;
     std::unique_ptr<sf::Text> endText;
+    std::unique_ptr<sf::Text> delText;
     std::unique_ptr<sf::Text> descriptionText;
+    std::vector<std::string> descriptionLines;
     
     sf::RectangleShape backBtn;
     sf::RectangleShape endBtn;
+    sf::RectangleShape delBtn;
     sf::Texture backTexture;
     sf::Texture endTexture;
+    sf::Texture delTexture;
 
     std::map<int, json> itemsData;
 
@@ -71,6 +79,7 @@ private:
     std::vector<Task> currentTasks;
     int currentLevel;
     int completedTasksCount;    
+    int totalFiguresInLevel;
     std::vector<PlacedItem> placedItems;
 
     TetrominoManager manager;

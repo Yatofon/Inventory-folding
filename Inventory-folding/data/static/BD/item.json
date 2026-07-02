@@ -1,184 +1,212 @@
 {
     "1": {
         "shape": [[0,0], [1,0]],
-        "name": "брус",
-        "price": "10",
-        "affiliation": "строительство"
+        "color": [227, 125, 13],
+        "name": "beam",
+        "price": 10,
+        "affiliation": "construction"
     },
     "2": {
         "shape": [[0,0], [1,0], [2,0]],
-        "name": "длинный брус",
-        "price": "15",
-        "affiliation": "строительство"
+        "color": [169, 63, 15],
+        "name": "long beam",
+        "price": 15,
+        "affiliation": "construction"
     },
     "3": {
         "shape": [[0,0], [1,0],[0,1]],
-        "name": "дерев. угол",
-        "price": "15",
-        "affiliation": "строительство"
+        "color": [166, 139, 100],
+        "name": "wooden corner",
+        "price": 15,
+        "affiliation": "construction"
     },
     "4": {
         "shape": [[0,0], [1,0], [0,1], [1,1]],
-        "name": "лист фанеры",
-        "price": "20",
-        "affiliation": "строительство"
+        "color": [180, 120, 80],
+        "name": "plywood sheet",
+        "price": 20,
+        "affiliation": "construction"
     },
     "5": {
         "shape": [[0,0]],
-        "name": "шурупы",
-        "price": "5",
-        "affiliation": "строительство"
+        "color": [132, 134, 174],
+        "name": "screws",
+        "price": 5,
+        "affiliation": "construction"
     },
     "6": {
         "shape": [[0,0], [1,0]],
-
-        "name": "металопрофиль",
-        "price": "20",
-        "affiliation": "строительство"
+        "color": [70, 90, 145],
+        "name": "metal profile",
+        "price": 20,
+        "affiliation": "construction"
     },
     "7": {
         "shape":[[0,0], [1,0], [1,0]],
-        "name": "метал. уголок",
-        "price": "25",
-        "affiliation": "строительство"
+        "color": [41, 69, 112],
+        "name": "metal angle",
+        "price": 25,
+        "affiliation": "construction"
     },
     "8": {
         "shape":[[0,0], [1,0], [1,0], [1,1]],
-        "name": "профнастил",
-        "price": "35",
-        "affiliation": "строительство"
+        "color": [22, 38, 96],
+        "name": "corrugated sheet",
+        "price": 35,
+        "affiliation": "construction"
     },
     "9": {
         "shape": [[0,0], [1,0], [0,1], [1,1]],
-        "name": "стекло",
-        "price": "40",
-        "affiliation": "строительство"
+        "color": [216, 232, 253],
+        "name": "glass",
+        "price": 40,
+        "affiliation": "construction"
     },
     "10": {
         "shape": [[0,0], [0,1]],
-        "name": "бол. анкера",
-        "price": "15",
-        "affiliation": "строительство"
+        "color": [38, 92, 166],
+        "name": "large anchors",
+        "price": 15,
+        "affiliation": "construction"
     },
     "11": {
         "shape": [[0,0], [1,0], [2,0], [3,0]],
-        "name": "брус",
-        "price": "10",
-        "affiliation": "строительство"
+        "color": [11, 25, 45],
+        "name": "rebar",
+        "price": 10,
+        "affiliation": "construction"
     },
     "12": {
         "shape": [[0,0]],
-        "name": "молоток",
+        "color": [43, 126, 156],
+        "name": "hammer",
         "price": 25,
-        "affiliation": "инструменты"
+        "affiliation": "tools"
     },
     "13": {
         "shape": [[0,0],[1,0]],
-        "name": "отвёртка",
+        "color": [195, 29, 35],
+        "name": "screwdriver",
         "price": 15,
-        "affiliation": "инструменты"
+        "affiliation": "tools"
     },
     "14": {
         "shape": [[0,0],[0,1]],
-        "name": "плоскогубцы",
+        "color": [94, 2, 6],
+        "name": "pliers",
         "price": 20,
-        "affiliation": "инструменты"
+        "affiliation": "tools"
     },
     "15": {
         "shape": [[0,0],[1,0],[2,0]],
-        "name": "гаечный ключ",
+        "color": [229, 6, 14],
+        "name": "wrench",
         "price": 18,
-        "affiliation": "инструменты"
+        "affiliation": "tools"
     },
     "16": {
         "shape": [[0,0],[0,1],[0,2]],
-        "name": "дрель",
+        "color": [29, 6, 229],
+        "name": "drill",
         "price": 45,
-        "affiliation": "инструменты"
+        "affiliation": "tools"
     },
     "17": {
         "shape": [[0,0],[1,0],[0,1]],
-        "name": "пила",
+        "color": [104, 103, 111],
+        "name": "saw",
         "price": 30,
-        "affiliation": "инструменты"
+        "affiliation": "tools"
     },
     "18": {
         "shape": [[0,0],[1,0],[1,1]],
-        "name": "топор",
+        "color": [23, 22, 29],
+        "name": "axe",
         "price": 35,
-        "affiliation": "инструменты"
+        "affiliation": "tools"
     },
     "19": {
         "shape": [[0,0],[1,0],[2,0],[3,0]],
-        "name": "стамеска",
+        "color": [67, 61, 118],
+        "name": "chisel",
         "price": 22,
-        "affiliation": "инструменты"
+        "affiliation": "tools"
     },
     "20": {
         "shape": [[0,0],[0,1],[1,1],[1,0]],
-        "name": "рубанок",
+        "color": [86, 47, 6],
+        "name": "plane",
         "price": 28,
-        "affiliation": "инструменты"
+        "affiliation": "tools"
     },
-
     "21": {
         "shape": [[0,0]],
-        "name": "резистор",
+        "color": [15, 31, 10],
+        "name": "resistor",
         "price": 12,
-        "affiliation": "электроника"
+        "affiliation": "electronics"
     },
     "22": {
         "shape": [[0,0],[1,0]],
-        "name": "конденсатор",
+        "color": [26, 40, 32],
+        "name": "capacitor",
         "price": 18,
-        "affiliation": "электроника"
+        "affiliation": "electronics"
     },
     "23": {
         "shape": [[0,0],[0,1]],
-        "name": "транзистор",
+        "color": [23, 130, 67],
+        "name": "transistor",
         "price": 25,
-        "affiliation": "электроника"
+        "affiliation": "electronics"
     },
     "24": {
         "shape": [[0,0],[1,0],[2,0]],
-        "name": "микросхема",
+        "color": [13, 94, 46],
+        "name": "microchip",
         "price": 50,
-        "affiliation": "электроника"
+        "affiliation": "electronics"
     },
     "25": {
         "shape": [[0,0],[0,1],[0,2]],
-        "name": "диод",
+        "color": [35, 175, 14],
+        "name": "diode",
         "price": 10,
-        "affiliation": "электроника"
+        "affiliation": "electronics"
     },
     "26": {
         "shape": [[0,0],[1,0],[0,1]],
-        "name": "светодиод",
+        "color": [240, 0, 30],
+        "name": "LED",
         "price": 8,
-        "affiliation": "электроника"
+        "affiliation": "electronics"
     },
     "27": {
         "shape": [[0,0],[1,0],[1,1]],
-        "name": "реле",
+        "color": [79, 34, 39],
+        "name": "relay",
         "price": 32,
-        "affiliation": "электроника"
+        "affiliation": "electronics"
     },
     "28": {
         "shape": [[0,0],[1,0],[2,0],[3,0]],
-        "name": "трансформатор",
+        "color": [8, 2, 3],
+        "name": "transformer",
         "price": 55,
-        "affiliation": "электроника"
+        "affiliation": "electronics"
     },
     "29": {
         "shape": [[0,0],[0,1],[1,1],[1,0]],
-        "name": "батарейка",
+        "color": [31, 122, 127],
+        "name": "battery",
         "price": 20,
-        "affiliation": "электроника"
+        "affiliation": "electronics"
     },
     "30": {
         "shape": [[0,0],[1,0],[2,0],[1,1]],
-        "name": "предохранитель",
+        "color": [13, 46, 48],
+        "name": "fuse",
         "price": 15,
-        "affiliation": "электроника"
+        "affiliation": "electronics"
     }
 }

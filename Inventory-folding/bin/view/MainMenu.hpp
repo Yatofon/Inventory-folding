@@ -1,3 +1,4 @@
+#pragma once
 #include <SFML/Graphics.hpp>
 #include <memory>
 
@@ -6,7 +7,7 @@ class MainMenu
 public:
     MainMenu();
     void handleEvent(const sf::Event& event, sf::RenderWindow& window);
-    void render(sf::RenderWindow& window);\
+    void render(sf::RenderWindow& window);
 
 private:
     sf::Font font;

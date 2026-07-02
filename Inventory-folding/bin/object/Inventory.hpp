@@ -4,9 +4,18 @@
 #include <vector>
 #include <SFML/Graphics.hpp>
 
+struct StoredItem {
+    Tetromino tetromino;
+    sf::Vector2i position;
+    sf::Color color;
+    std::vector<sf::Vector2i> cells;
+};
+
+
 class Inventory {
 private:
     std::vector<std::vector<bool>> grid;
+    std::vector<StoredItem> storedItems;
     int width;
     int height;
     sf::Color emptyColor;
@@ -22,7 +31,12 @@ public:
 
     bool placeItem(int x, int y);
     bool placeItem(const std::vector<sf::Vector2i>& cells);
+    bool placeItemWithColor(const Tetromino& tetromino, 
+                           const std::vector<sf::Vector2i>& cells,
+                           sf::Color color);
 
+    const std::vector<StoredItem>& getStoredItems() const { return storedItems; }
+    
     // Попытка добавить предмет
     bool addItem(const Tetromino& item, sf::Vector2i position);
 

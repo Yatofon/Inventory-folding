@@ -6,31 +6,34 @@
 #include <iostream>
 #include "GameStats.hpp"
 #include <set>
+#include <sstream>
+#include <algorithm>
 
 const sf::Vector2f gridOffset({100.f, 200.f});
 const sf::Vector2f inventoryOffset({540.f, 200.f});
 
-std::ifstream file("../data/static/BD/item.json");
-
 std::vector<PlacedItem> placedItems;
 
 GameGUI::GameGUI()
-    :
-    inventory(8, 6, sf::Color::Transparent, sf::Color::White),
-    manager(40.f, {100.f, 200.f}),
-    grid(10, std::vector<bool>(10, false)),
-    cellSize(40.0f),
-    title(nullptr),
-    backText(nullptr),
-    endText(nullptr),
-    currentLevel(4),
-    completedTasksCount(0),
-    activeFigureIndex(0)
+    : inventory(5, 3, sf::Color::Transparent, sf::Color::White),
+      manager(40.f, {100.f, 200.f}),
+      grid(10, std::vector<bool>(10, false)),
+      cellSize(40.0f),
+      title(nullptr),
+      backText(nullptr),
+      endText(nullptr),
+      descriptionText(nullptr),
+      currentLevel(5),
+      completedTasksCount(0),
+      activeFigureIndex(0)
 {
     fontLoaded = font.openFromFile("Tokushupikuseru-Regular.otf");
     
     backTexture.loadFromFile("BtnBackground.jpg");
     endTexture.loadFromFile("BtnBackground.jpg");
+    delTexture.loadFromFile("BtnBackground.jpg");   // добавил
+
+    descriptionText = std::make_unique<sf::Text>(font, "", 24);
 
     std::ifstream taskFile("../data/static/BD/tasks.json");
     if (taskFile.is_open()) 
@@ -44,6 +47,7 @@ GameGUI::GameGUI()
            for (const auto& task : value)
            {
             Task t;
+            t.type = task.value("type", "");          // добавил поле type
             t.target = task.contains("target") ? task["target"].get<float>() : 0.0f;
             t.description = task["description"];
             t.completed = false;
@@ -58,8 +62,8 @@ GameGUI::GameGUI()
     loadLevel(currentLevel);
     loadLevelTasks(currentLevel);
     createDefaultFigure();
-
-    loadLevelTasks(currentLevel);
+    updateItemDescription();   // новое
+    updateTasksStatus();       // новое
 
     float winWidth = 1600.f;
     float winHeight = 900.f;
@@ -77,6 +81,13 @@ GameGUI::GameGUI()
         endText = std::make_unique<sf::Text>(font, "End", 60);
         endText->setPosition({1400.f, 790.f});
         endText->setFillColor(sf::Color::Black);
+
+        delText = std::make_unique<sf::Text>(font, "Delete Item", 60);  // добавил
+        delText->setPosition({610.f, 490.f});
+        delText->setFillColor(sf::Color::Black);
+
+        descriptionText = std::make_unique<sf::Text>(font, "", 60);
+        descriptionText->setFillColor(sf::Color::White);
     }
 
     backBtn.setSize({300, 80});
@@ -86,6 +97,13 @@ GameGUI::GameGUI()
     endBtn.setSize({300, 80});
     endBtn.setPosition({1280.f, 800.f});
     endBtn.setTexture(&endTexture);
+
+    delBtn.setSize({300, 80});                        // добавил
+    delBtn.setPosition({545.f, 500.f});
+    delBtn.setTexture(&delTexture);
+
+    updateItemDescription();
+    updateTasksStatus();
 }
 
 GameGUI::~GameGUI() = default;
@@ -256,8 +274,36 @@ void GameGUI::endDrag(const sf::Event& event) {
                 // Проверяем, можно ли разместить в инвентаре
                 if (inventory.ValidInInventory(cells)) {
                     // Размещаем в инвентаре через placeItem
-                    if (inventory.placeItem(cells)) {
+                    if (inventory.placeItemWithColor(player, cells, player.color)) {
                         std::cout << "Item placed in inventory!" << cells[0].x << cells[0].y << std::endl;
+                        
+                        // Сохраняем информацию о размещённом предмете в placedItems
+                        int itemId = -1;
+                        for (const auto& [id, data] : itemsData) {
+                            if (data.contains("color")) {
+                                auto colorArray = data["color"];
+                                if (colorArray.size() == 3) {
+                                    sf::Color itemColor(
+                                        colorArray[0].get<int>(),
+                                        colorArray[1].get<int>(),
+                                        colorArray[2].get<int>()
+                                    );
+                                    if (player.color == itemColor) {
+                                        itemId = id;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                        if (itemId != -1) {
+                            PlacedItem p;
+                            p.id = itemId;
+                            p.name = itemsData[itemId].value("name", "No name");
+                            p.price = itemsData[itemId].value("price", 0);
+                            p.category = itemsData[itemId].value("affiliation", "Unknown");
+                            p.cells = cells;
+                            placedItems.push_back(p);
+                        }
                         
                         // Удаляем активную фигуру
                         if (!availableFigures.empty() && activeFigureIndex < availableFigures.size()) {
@@ -269,8 +315,11 @@ void GameGUI::endDrag(const sf::Event& event) {
                             activeFigureIndex = 0;
                             player = availableFigures[0];
                             player.position = {0, 0};
+                            updateItemDescription();
+                            updateTasksStatus();  // обновляем задания
                         } else {
                             lastCompletedTasks = completedTasksCount;
+                            collectStats();       // собираем статистику перед переходом
                             currentAppStatus = AppStatus::GAMERESULTS;
                             dragState.reset();
                             return;
@@ -307,6 +356,10 @@ void GameGUI::cancelDrag() {
     }
 }
 
+// ============================================
+// ЗАГРУЗКА УРОВНЕЙ И ЗАДАНИЙ
+// ============================================
+
 void GameGUI::loadLevelTasks(int level)
 {
     if (level >= 1 && level <= (int)allTasks.size()) {
@@ -322,6 +375,45 @@ void GameGUI::updateTasksStatus()
     int usedCells = 0;
     int itemCount = 0;
     std::set<std::string> categories;
+
+    for (const auto& item : placedItems) {
+        totalCost += item.price;
+        usedCells += item.cells.size();
+        itemCount++;
+        categories.insert(item.category);
+    }
+
+    int completed = 0;
+    for (auto& task : currentTasks) {
+        bool isCompleted = false;
+        if (task.type == "min_cost") {
+            isCompleted = (totalCost >= task.target);
+        } else if (task.type == "min_cells") {
+            isCompleted = (usedCells >= task.target);
+        } else if (task.type == "min_efficiency") {
+            if (usedCells > 0) {
+                float efficiency = static_cast<float>(totalCost) / usedCells;
+                isCompleted = (efficiency >= task.target);
+            } else {
+                isCompleted = false;
+            }
+        } else if (task.type == "all_categories") {
+            isCompleted = (categories.size() == 3);
+        } else if (task.type == "use_all") {
+            isCompleted = (itemCount == totalFiguresInLevel);
+        } else if (task.type == "min_items") {
+            isCompleted = (itemCount >= task.target);
+        } else if (task.type == "max_items") {
+            isCompleted = (itemCount <= task.target);
+        } else if (task.type == "max_cells") {
+            isCompleted = (usedCells <= task.target);
+        } else {
+            isCompleted = false;
+        }
+        task.completed = isCompleted;
+        if (isCompleted) completed++;
+    }
+    completedTasksCount = completed;
 }
 
 void GameGUI::loadItems()
@@ -340,7 +432,7 @@ void GameGUI::loadItems()
 
 void GameGUI::loadTasks()
 {
-
+    // Загружается в конструкторе
 }
 
 void GameGUI::createDefaultFigure()
@@ -351,6 +443,8 @@ void GameGUI::createDefaultFigure()
         fig.position = {0, 0};
         availableFigures.push_back(fig);
         player = availableFigures[0];
+        updateItemDescription();
+        updateTasksStatus();
     }
 }
 
@@ -368,8 +462,8 @@ void GameGUI::loadLevel(int levelID)
         if (levels.contains(key))
         {
             availableFigures.clear();
-            float startX = 50.f;
-            float yPos = 200.f;
+            float startX = 0.f;
+            float yPos = 0.f;
 
             for (int id : levels[key])
             {
@@ -382,14 +476,100 @@ void GameGUI::loadLevel(int levelID)
                     startX += 50.f;
                 }
             }
+            totalFiguresInLevel = availableFigures.size();  // важно для use_all
             if (!availableFigures.empty())
             {    
                 player = availableFigures[0];
+                updateItemDescription();
+                updateTasksStatus();
             }
         }
     }
     loadLevelTasks(levelID);
 }
+
+// ============================================
+// ОТОБРАЖЕНИЕ ИНФОРМАЦИИ О ПРЕДМЕТЕ
+// ============================================
+
+void GameGUI::updateItemDescription() {
+    std::string info;
+    for (const auto& [id, data] : itemsData) {
+        if (data.contains("color")) {
+            auto colorArray = data["color"];
+            if (colorArray.size() == 3) {
+                sf::Color itemColor(
+                    colorArray[0].get<int>(),
+                    colorArray[1].get<int>(),
+                    colorArray[2].get<int>()
+                );
+                if (player.color == itemColor) {
+                    info += "Name: " + data.value("name", "No name") + "\n";
+                    info += "Price: " + std::to_string(data.value("price", 0)) + "\n";
+                    info += "Category: " + data.value("affiliation", "Unknown") + "\n";
+                    info += "Size: " + std::to_string(player.shape.size()) + " cells";
+                    break;
+                }
+            }
+        }
+    }
+    if (info.empty()) {
+        info = "Unknown item";
+    }
+    descriptionText->setString(info);
+    descriptionLines.clear();
+    std::stringstream ss(info);
+    std::string line;
+    while (std::getline(ss, line, '\n')) {
+        descriptionLines.push_back(line);
+    }
+}
+
+// ============================================
+// СБОР СТАТИСТИКИ ДЛЯ ЭКРАНА РЕЗУЛЬТАТОВ
+// ============================================
+
+void GameGUI::collectStats() {
+    int totalCost = 0;
+    int usedCells = 0;
+    for (const auto& item : placedItems) {
+        totalCost += item.price;
+        usedCells += item.cells.size();
+    }
+    GameStats::totalCost = totalCost;
+    GameStats::itemCount = placedItems.size();
+    GameStats::usedCells = usedCells;
+    GameStats::totalCells = inventory.getWidth() * inventory.getHeight();
+    GameStats::completedTasksCount = completedTasksCount;
+    GameStats::categoryCount.clear();
+    for (const auto& item : placedItems) {
+        GameStats::categoryCount[item.category]++;
+    }
+    GameStats::currentLevel = currentLevel;
+}
+
+// ============================================
+// УДАЛЕНИЕ ПРЕДМЕТА ИЗ placedItems
+// ============================================
+
+void GameGUI::removePlacedItem(const std::vector<sf::Vector2i>& cells) {
+    auto it = std::find_if(placedItems.begin(), placedItems.end(),
+        [&](const PlacedItem& p) {
+            if (p.cells.size() != cells.size()) return false;
+            for (const auto& c : cells) {
+                if (std::find(p.cells.begin(), p.cells.end(), c) == p.cells.end())
+                    return false;
+            }
+            return true;
+        });
+    if (it != placedItems.end()) {
+        placedItems.erase(it);
+    }
+}
+
+// ============================================
+// ОБРАБОТКА СОБЫТИЙ
+// ============================================
 
 void GameGUI::handleEvent(const sf::Event& event, sf::RenderWindow& window)
 {
@@ -430,7 +610,34 @@ void GameGUI::handleEvent(const sf::Event& event, sf::RenderWindow& window)
                     case sf::Keyboard::Key::Space: {
                         auto cells = manager.getAbsoluteCells(player);
                         if (inventory.ValidInInventory(cells)) {
-                            if (inventory.placeItem(cells)) {
+                            if (inventory.placeItemWithColor(player, cells, player.color)) {
+                                // Сохраняем в placedItems
+                                int itemId = -1;
+                                for (const auto& [id, data] : itemsData) {
+                                    if (data.contains("color")) {
+                                        auto colorArray = data["color"];
+                                        if (colorArray.size() == 3) {
+                                            sf::Color itemColor(
+                                                colorArray[0].get<int>(),
+                                                colorArray[1].get<int>(),
+                                                colorArray[2].get<int>()
+                                            );
+                                            if (player.color == itemColor) {
+                                                itemId = id;
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                                if (itemId != -1) {
+                                    PlacedItem p;
+                                    p.id = itemId;
+                                    p.name = itemsData[itemId].value("name", "No name");
+                                    p.price = itemsData[itemId].value("price", 0);
+                                    p.category = itemsData[itemId].value("affiliation", "Unknown");
+                                    p.cells = cells;
+                                    placedItems.push_back(p);
+                                }
                                 // Удаляем активную фигуру по индексу
                                 if (!availableFigures.empty() && activeFigureIndex < availableFigures.size()) {
                                     availableFigures.erase(availableFigures.begin() + activeFigureIndex);
@@ -440,9 +647,12 @@ void GameGUI::handleEvent(const sf::Event& event, sf::RenderWindow& window)
                                     activeFigureIndex = 0; // берём первую из оставшихся
                                     player = availableFigures[0];
                                     player.position = {0, 0};
+                                    updateItemDescription();
+                                    updateTasksStatus();
                                 } else {
                                     // Все фигуры размещены
                                     lastCompletedTasks = completedTasksCount;
+                                    collectStats();
                                     currentAppStatus = AppStatus::GAMERESULTS;
                                     return;
                                 }
@@ -468,27 +678,50 @@ void GameGUI::handleEvent(const sf::Event& event, sf::RenderWindow& window)
                 sf::Vector2f mousePos(static_cast<float>(mouse->position.x), 
                                      static_cast<float>(mouse->position.y));
                 if (backBtn.getGlobalBounds().contains(mousePos)) {
-                    GameStats::totalCost = 100;
-                    GameStats::itemCount = 5;
-                    GameStats::usedCells = 12;
-                    GameStats::totalCells = 48;
                     currentAppStatus = AppStatus::MAINMENU;
                 }
                 if (endBtn.getGlobalBounds().contains(mousePos)) 
                 {
+                    collectStats();
                     lastCompletedTasks = completedTasksCount;
                     currentAppStatus = AppStatus::GAMERESULTS;
                 }
+                if (delBtn.getGlobalBounds().contains(mousePos)) {
+                    // Удаляем активную фигуру
+                    if (!availableFigures.empty() && activeFigureIndex < availableFigures.size()) {
+                        auto cellsToRemove = manager.getAbsoluteCells(player);
+                        removePlacedItem(cellsToRemove);
+                        availableFigures.erase(availableFigures.begin() + activeFigureIndex);
+                        if (!availableFigures.empty()) {
+                            activeFigureIndex = activeFigureIndex % availableFigures.size();
+                            player = availableFigures[activeFigureIndex];
+                            player.position = {0, 0};
+                            updateItemDescription();
+                            updateTasksStatus();
+                        } else {
+                            collectStats();
+                            lastCompletedTasks = completedTasksCount;
+                            currentAppStatus = AppStatus::GAMERESULTS;
+                            dragState.reset();
+                            return;
+                        }
+                    }
+                }
             }
+            
         }
     }
 }
 
+// ============================================
+// ОТРИСОВКА
+// ============================================
+
 void GameGUI::render(sf::RenderWindow& window)
 {
     // Рисуем сетку
-    for (int y = 0; y < grid.size(); ++y) {
-        for (int x = 0; x < grid[0].size(); ++x) {
+    for (int y = 0; y < 5; ++y) {
+        for (int x = 0; x < 5; ++x) {
             sf::RectangleShape cell(sf::Vector2f(cellSize - 1, cellSize - 1));
             sf::Vector2f pos(gridOffset.x + x * cellSize, 
                             gridOffset.y + y * cellSize);
@@ -541,6 +774,23 @@ void GameGUI::render(sf::RenderWindow& window)
         // Обычная отрисовка
         manager.draw(window, player);
     }
+
+    // Отрисовка описания предмета (ранее была отдельная переменная descriptionLines)
+    if (!descriptionLines.empty())
+    {
+        float lineHeight = 30.f;
+        float fontSize = 60.f;
+        float startX = 650.f;
+        float startY = 650.f;
+        for (size_t i = 0; i < descriptionLines.size(); ++i) 
+        {
+            sf::Text lineText(font, descriptionLines[i], fontSize);
+            lineText.setPosition(sf::Vector2f(startX, startY + i * lineHeight));
+            lineText.setFillColor(sf::Color::White);
+            window.draw(lineText);
+        }
+    }
+
     if (fontLoaded) 
     {
         float x = 900.f;
@@ -562,10 +812,11 @@ void GameGUI::render(sf::RenderWindow& window)
     
     window.draw(backBtn);
     window.draw(endBtn);
+    window.draw(delBtn);
     if (fontLoaded) {
         if (title) window.draw(*title);
         if (backText) window.draw(*backText);
         if (endText) window.draw(*endText);
+        if (delText) window.draw(*delText);
     }
 }
-

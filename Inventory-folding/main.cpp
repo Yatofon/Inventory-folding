@@ -3,6 +3,7 @@
 #include "bin/view/MainMenu.hpp"
 #include "bin/view/GameGUI.hpp"
 #include "bin/view/GameResults.hpp"
+#include "bin/view/GameStats.hpp"
 #include <iostream>
 
 int currentAppStatus = AppStatus::MAINMENU;
@@ -10,6 +11,7 @@ int lastCompletedTasks = 0;
 
 int main() {
     sf::RenderWindow window(sf::VideoMode({1600, 900}), "Inventory Folding");
+    loadRecords();
     window.setFramerateLimit(60);
     
     sf::Texture bgTexture;
@@ -25,7 +27,7 @@ int main() {
 
     MainMenu mainMenu;
     GameGUI gameGUI;
-    GameResults gameResults(lastCompletedTasks);
+    GameResults gameResults;
 
     while (window.isOpen()) {
         while (const auto event = window.pollEvent()) {
