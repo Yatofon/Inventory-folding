@@ -107,6 +107,7 @@ void GameResults::render(sf::RenderWindow& window)
         best.totalCells = GameStats::totalCells;
         best.completedTasks = GameStats::completedTasksCount;
         isNewRecord = true;
+        saveRecords();
     }
 
     // Отображаем лучший счёт

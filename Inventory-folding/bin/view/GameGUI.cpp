@@ -98,7 +98,7 @@ GameGUI::GameGUI()
     endBtn.setPosition({1280.f, 800.f});
     endBtn.setTexture(&endTexture);
 
-    delBtn.setSize({300, 80});                        // добавил
+    delBtn.setSize({300, 80});
     delBtn.setPosition({545.f, 500.f});
     delBtn.setTexture(&delTexture);
 
@@ -604,62 +604,9 @@ void GameGUI::handleEvent(const sf::Event& event, sf::RenderWindow& window)
                     case sf::Keyboard::Key::Up:
                         manager.move(player, 0, -1, grid);
                         break;
-                    case sf::Keyboard::Key::LShift:
+                    case sf::Keyboard::Key::Space:
                         manager.rotate(player, grid);
                         break;
-                    case sf::Keyboard::Key::Space: {
-                        auto cells = manager.getAbsoluteCells(player);
-                        if (inventory.ValidInInventory(cells)) {
-                            if (inventory.placeItemWithColor(player, cells, player.color)) {
-                                // Сохраняем в placedItems
-                                int itemId = -1;
-                                for (const auto& [id, data] : itemsData) {
-                                    if (data.contains("color")) {
-                                        auto colorArray = data["color"];
-                                        if (colorArray.size() == 3) {
-                                            sf::Color itemColor(
-                                                colorArray[0].get<int>(),
-                                                colorArray[1].get<int>(),
-                                                colorArray[2].get<int>()
-                                            );
-                                            if (player.color == itemColor) {
-                                                itemId = id;
-                                                break;
-                                            }
-                                        }
-                                    }
-                                }
-                                if (itemId != -1) {
-                                    PlacedItem p;
-                                    p.id = itemId;
-                                    p.name = itemsData[itemId].value("name", "No name");
-                                    p.price = itemsData[itemId].value("price", 0);
-                                    p.category = itemsData[itemId].value("affiliation", "Unknown");
-                                    p.cells = cells;
-                                    placedItems.push_back(p);
-                                }
-                                // Удаляем активную фигуру по индексу
-                                if (!availableFigures.empty() && activeFigureIndex < availableFigures.size()) {
-                                    availableFigures.erase(availableFigures.begin() + activeFigureIndex);
-                                }
-                                // Обновляем активную фигуру
-                                if (!availableFigures.empty()) {
-                                    activeFigureIndex = 0; // берём первую из оставшихся
-                                    player = availableFigures[0];
-                                    player.position = {0, 0};
-                                    updateItemDescription();
-                                    updateTasksStatus();
-                                } else {
-                                    // Все фигуры размещены
-                                    lastCompletedTasks = completedTasksCount;
-                                    collectStats();
-                                    currentAppStatus = AppStatus::GAMERESULTS;
-                                    return;
-                                }
-                            }
-                        }
-                        break;
-                    }
                     case sf::Keyboard::Key::Escape:
                         cancelDrag(); // Отменяем drag при Escape
                         break;
