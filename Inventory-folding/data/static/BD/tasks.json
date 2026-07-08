@@ -1,0 +1,85 @@
+{
+    "1": [
+        {
+            "type": "min_cost",
+            "target": 30,
+            "description": "Collect items worth at least 30"
+        },
+        {
+            "type": "min_cells",
+            "target": 5,
+            "description": "Fill in at least 5 inventory slots"
+        },
+        {
+            "type": "use_all",  
+            "description": "Use all 4 items from the level"
+        }
+    ],
+    "2": [
+        {
+            "type": "min_cost",
+            "target": 60,
+            "description": "Collect items worth at least 60"
+        },
+        {
+            "type": "min_cells",
+            "target": 6,
+            "description": "Fill in at least 6 inventory slots"
+        },
+        {
+            "type": "min_items",
+            "target": 4,
+            "description": "Use at least 4 items"
+        }
+    ],
+    "3": [
+        {
+            "type": "min_cost",
+            "target": 100,
+            "description": "Collect items worth at least 100"
+        },
+        {
+            "type": "min_cells",
+            "target": 7,
+            "description": "Fill in at least 8 inventory slots"
+        },
+        {
+            "type": "min_efficiency",
+            "target": 10,
+            "description": "Achieve cost-to-filled ratio of ≥ 10"
+        }
+    ],
+    "4": [
+        {
+            "type": "min_cost",
+            "target": 80,
+            "description": "Collect items worth at least 80"
+        },
+        {
+            "type": "min_cells",
+            "target": 8,
+            "description": "Fill in at least 8 inventory slots"
+        },
+        {
+            "type": "all_categories",
+            "description": "Collect at least one item from each category"
+        }
+    ],
+    "5": [
+        {
+            "type": "min_cost",
+            "target": 60,
+            "description": "Collect items worth at least 60"
+        },
+        {
+            "type": "min_cells",
+            "target": 7,
+            "description": "Fill in at least 7 inventory slots"
+        },
+        {
+            "type": "max_items",
+            "target": 4,
+            "description": "Use no more than 4 items"
+        }
+    ]
+}

@@ -1,3 +1,3 @@
-C:/Users/User/Desktop/Inventory-folding/build/CMakeFiles/example.dir
-C:/Users/User/Desktop/Inventory-folding/build/CMakeFiles/edit_cache.dir
-C:/Users/User/Desktop/Inventory-folding/build/CMakeFiles/rebuild_cache.dir
+C:/Users/Yatofon/Desktop/Practice/Inventory-folding/build/CMakeFiles/example.dir
+C:/Users/Yatofon/Desktop/Practice/Inventory-folding/build/CMakeFiles/edit_cache.dir
+C:/Users/Yatofon/Desktop/Practice/Inventory-folding/build/CMakeFiles/rebuild_cache.dir
